@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "enemyvisual.h": "c"
+        "enemyvisual.h": "c",
+        "colors.h": "c",
+        "miscvisual.h": "c",
+        "windows.h": "c",
+        "uivisual.h": "c",
+        "stdio.h": "c",
+        "player.h": "c",
+        "conio.h": "c",
+        "stdbool.h": "c"
     }
 }
