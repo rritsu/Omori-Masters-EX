@@ -8,6 +8,8 @@
         "stdio.h": "c",
         "player.h": "c",
         "conio.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "utility.h": "c",
+        "wincon.h": "c"
     }
 }

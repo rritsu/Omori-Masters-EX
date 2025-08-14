@@ -1,15 +1,15 @@
 #include "logic/menu.c"
+#include "logic/utility.h"
+
 #include "visual/enemyVisual.h"
 //#include "visual/UIVisual.h"
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
+    HideCursor();
 
-   // system("cls");
-    //displayMainMenu();
-    printf("Press any key to start...\n");
-    //MAIN LOOP
-    mainMenu();
+    ConfigureScreenSettings();
+    MainMenu();
   
 
     return 0;
