@@ -15,8 +15,8 @@ void DisplayHP(int quantity, int HP, char syncHP[]) {
     int h = HP / 5;
     int e = 20 - h;
 
-    char temp[20];
-    sprintf(temp, "%2d | DU: ",  quantity);
+    char temp[30];
+    sprintf(temp, HI_CYAN "%2d" RESET " | DU: ",  quantity);
     strcpy(syncHP, temp);
    // strcpy(syncHP, "   DU: ");
 
@@ -25,10 +25,10 @@ void DisplayHP(int quantity, int HP, char syncHP[]) {
             strcat(syncHP, HI_GREEN "█" RESET);
         }
         else if (HP > 30) {
-            strcat(syncHP, HI_YELLOW "█" RESET);
+            strcat(syncHP, REG_YELLOW "█" RESET);
         }
         else {
-            strcat(syncHP, HI_RED "█" RESET);
+            strcat(syncHP, REG_RED "█" RESET);
         }
     }
 
@@ -39,7 +39,7 @@ void DisplayHP(int quantity, int HP, char syncHP[]) {
     strcat(syncHP, "  ");
 }
 
-void DisplayStrikePair(Player p, char strike[20][100], boolean displayInfo, int* max) {
+void DisplayStrikePair(Player p, char strike[20][150], bool displayInfo, int* max) {
     char r0[100] =  HI_RED "╔═════───────  1  ───────═════╗" RESET;
     char r1[100] =  HI_RED "║                             " REG_PURPLE "║" RESET;
     char r2[100] =  HI_RED "║" HI_BLACK "     ▒▒░                     " REG_PURPLE "║" RESET;
@@ -54,7 +54,7 @@ void DisplayStrikePair(Player p, char strike[20][100], boolean displayInfo, int*
     char r11[100] = HI_RED "│" HI_BLACK "             ░░     ░▓█▒     " REG_PURPLE "│" RESET;
     char r12[100] = HI_RED "║" HI_BLACK "                      ░░     " REG_PURPLE "║" RESET;
     char r13[100] = HI_RED "║" HI_BLACK "                             " REG_PURPLE "║" RESET;
-    char r14[100] = REG_PURPLE "╚═════────── STRIKE ─────═════╝" RESET;
+    char r14[150] = REG_PURPLE "╚═════────── " HI_RED "STRIKE" REG_PURPLE " ─────═════╝" RESET;
 
     strcpy(strike[0], r0);   strcpy(strike[1], r1);
     strcpy(strike[2], r2);   strcpy(strike[3], r3);
@@ -76,7 +76,7 @@ void DisplayStrikePair(Player p, char strike[20][100], boolean displayInfo, int*
     }
 }
 
-void DisplayTechPair(Player p, char tech[20][100], boolean displayInfo) {
+void DisplayTechPair(Player p, char tech[20][150], bool displayInfo) {
     char r0[100] =  HI_BLUE "╔═════───────  2  ───────═════╗" RESET;
     char r1[100] =  HI_BLUE "║                             " REG_PURPLE "║" RESET;
     char r2[100] =  HI_BLUE "║" HI_BLACK "         ▒▓██▓▓▓▓░           " REG_PURPLE "║" RESET;
@@ -91,7 +91,7 @@ void DisplayTechPair(Player p, char tech[20][100], boolean displayInfo) {
     char r11[100] = HI_BLUE "│" HI_BLACK "                  ▒▒░▒▓      " REG_PURPLE "│" RESET;
     char r12[100] = HI_BLUE "║" HI_BLACK "                   ▓▓▒       " REG_PURPLE "║" RESET;
     char r13[100] = HI_BLUE "║" HI_BLACK "                             " REG_PURPLE "║" RESET;
-    char r14[100] = REG_PURPLE "╚═════─────── TECH ──────═════╝" RESET;
+    char r14[150] = REG_PURPLE "╚═════─────── " HI_BLUE "TECH" REG_PURPLE " ──────═════╝" RESET;
 
     strcpy(tech[0], r0);   strcpy(tech[1], r1);
     strcpy(tech[2], r2);   strcpy(tech[3], r3);
@@ -111,7 +111,7 @@ void DisplayTechPair(Player p, char tech[20][100], boolean displayInfo) {
     }
 }
 
-void DisplaySupportPair(Player p, char support[20][100], boolean displayInfo) {
+void DisplaySupportPair(Player p, char support[20][150], bool displayInfo) {
     char r0[100] =  REG_YELLOW "╔═════───────  3  ───────═════╗" RESET;
     char r1[100] =  REG_YELLOW "║                             " REG_PURPLE "║" RESET ;
     char r2[100] =  REG_YELLOW "║" HI_BLACK "               ░▓▒           " REG_PURPLE "║" RESET;
@@ -126,7 +126,7 @@ void DisplaySupportPair(Player p, char support[20][100], boolean displayInfo) {
     char r11[100] = REG_YELLOW "│" HI_BLACK "          ░▒▒▒░░░░░░░░░▓░    " REG_PURPLE "│" RESET;
     char r12[100] = REG_YELLOW "║" HI_BLACK "          ░▒▓▓▒▒▒▓▓▓▒░       " REG_PURPLE "║" RESET;
     char r13[100] = REG_YELLOW "║" HI_BLACK "                             " REG_PURPLE "║" RESET;
-    char r14[100] = REG_PURPLE "╚═════───── SUPPORT ─────═════╝" RESET;
+    char r14[150] = REG_PURPLE "╚═════───── " REG_YELLOW "SUPPORT" REG_PURPLE " ─────═════╝" RESET;
 
     strcpy(support[0], r0);   strcpy(support[1], r1);
     strcpy(support[2], r2);   strcpy(support[3], r3);
@@ -147,11 +147,11 @@ void DisplaySupportPair(Player p, char support[20][100], boolean displayInfo) {
 }
 
 
-void DisplayAllSyncs(Player p, int* max, boolean displayInfo) {
+void DisplayAllSyncs(Player p, int* max, bool displayInfo) {
    // char syncPairs[20][1000];
-    char strike[20][100];
-    char tech[20][100];
-    char support[20][100];
+    char strike[20][150];
+    char tech[20][150];
+    char support[20][150];
     char padding[21] = "                    ";
 
     DisplayStrikePair(p, strike, displayInfo, max);
