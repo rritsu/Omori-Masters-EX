@@ -3,11 +3,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "../visual/colors.h"
 #include "../visual/UIVisual.h"
 
 #include "inventory.c"
 #include "player.h"
+
+
 
 void ConfigureScreenSettings() {
     BorderCheck();
@@ -15,12 +16,26 @@ void ConfigureScreenSettings() {
    // Sleep(500);
 }
 
+void InitializePlayer(Player* player) {
+    player->strikeSync.HP = 40;
+    player->strikeSync.quantity = 1;
+
+    player->techSync.HP = 20;
+    player->techSync.quantity = 1;
+
+    player->supportSync.HP = 100;
+    player->supportSync.quantity = 1;
+
+    player->gems = 0;
+}
+
 void MainMenu() {
-    Player player = {1, 1, 1, 0};
+    Player player;
     char c = '0';
 
     system("cls");
     DisplayMainMenu();
+    InitializePlayer(&player);
 
     do {
         c = _getch(); 
@@ -45,6 +60,8 @@ void MainMenu() {
                 Sleep(500);
                 break;
         }
+
+        
 
         system("cls");
         DisplayMainMenu();

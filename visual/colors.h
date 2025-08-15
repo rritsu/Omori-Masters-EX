@@ -1,3 +1,6 @@
+#ifndef COLORS_H
+#define COLORS_H
+
 #define REG_BLACK "\e[0;30m"
 #define REG_RED "\e[0;31m"
 #define REG_GREEN "\e[0;32m"
@@ -61,4 +64,6 @@
 #define HIBG_CYAN "\e[0;106m"
 #define HIBG_WHITE "\e[0;107m"
 
-#define RESET "\e[0m"
+#define RESET "\x1b[0m"
+
+#endif

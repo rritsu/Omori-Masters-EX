@@ -7,6 +7,11 @@ void GoToInventory(Player p) {
         DisplayInventory(p);
         c = _getch(); 
 
+        if(c!= '4') {
+            InvalidInputPrompt();
+            Sleep(800);
+        }
+
         switch(c) {
             case '4':
                 RedirectingBack();
