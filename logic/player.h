@@ -11,6 +11,7 @@ typedef struct Player {
     Sync techSync;
     Sync supportSync;
     int gems;
+    int floor;
 } Player;
 
 #endif 

@@ -11,6 +11,8 @@
 #define TECH_COST 100
 #define SUPPORT_COST 100
 
+#define sys "\n\n\n\t\t"
+
 
 
 #include <windows.h>

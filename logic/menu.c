@@ -7,6 +7,7 @@
 
 #include "player.h"
 #include "utility.h"
+#include "battle.c"
 
 void ConfigureScreenSettings() {
     BorderCheck();
@@ -25,6 +26,7 @@ void InitializePlayer(Player* player) {
     player->supportSync.quantity = 1;
 
     player->gems = 0;
+    player->floor = 1;
 }
 
 void GoToInventory(Player p) {
@@ -36,13 +38,13 @@ void GoToInventory(Player p) {
 
         if(c!= '4') {
             InvalidInputPrompt();
-            Sleep(800);
+            Sleep(700);
         }
 
         switch(c) {
             case '4':
                 RedirectingBack();
-                Sleep(750);
+                Sleep(500);
                 break;
         }
 
@@ -66,7 +68,7 @@ void GoToShop(Player* p) {
 
         if(c != '1' && c != '2' && c != '3' && c != '4') {
             InvalidInputPrompt();
-            Sleep(800);
+            Sleep(700);
         }
 
         switch(c) {
@@ -77,7 +79,7 @@ void GoToShop(Player* p) {
                     PurchasePrompt(c, true);
                 }
                 else PurchasePrompt(c, false);
-                Sleep(750);
+                Sleep(500);
                 break;
             case '2':
                 if(p->gems >= TECH_COST) {
@@ -86,7 +88,7 @@ void GoToShop(Player* p) {
                     PurchasePrompt(c, true);
                 }
                 else PurchasePrompt(c, false);
-                Sleep(750);
+                Sleep(500);
                 break;
             case '3':
                 if(p->gems >= SUPPORT_COST) {
@@ -95,11 +97,11 @@ void GoToShop(Player* p) {
                     PurchasePrompt(c, true);
                 }
                 else PurchasePrompt(c, false);
-                Sleep(750);
+                Sleep(500);
                 break;
             case '4':
                 RedirectingBack();
-                Sleep(750);
+                Sleep(500);
                 break;
         }
 
@@ -108,7 +110,6 @@ void GoToShop(Player* p) {
 
 void ConfirmExit(bool* exitGame) {
     bool validInput = false;
-
     char c = '0';
     do {
         system("cls");
@@ -117,16 +118,47 @@ void ConfirmExit(bool* exitGame) {
 
         if(c!= '1' && c!= '2') {
             InvalidInputPrompt();
-            Sleep(800);
+            Sleep(700);
         }
         else {
             validInput = true;
             if(c == '1') {
                 *exitGame = true;
                 ExitPrompt();
-                Sleep(750);
+                Sleep(500);
             }
         }
+
+    } while(!validInput);
+}
+
+void GoToWhiteRoom(Player* p) {
+    bool validInput = false;
+    char c = '0';
+
+    do {
+        system("cls");
+        DisplayBlackRoom(*p);
+        c = _getch();
+
+        if(c!= '1' && c!= '2') {
+            InvalidInputPrompt();
+            Sleep(700);
+        }
+        else {
+            validInput = true;
+            if(c == '1') {
+                //battle loop
+                RedirectingToBattlePrompt();
+                BattleLoop();
+                Sleep(500);
+            }
+            else {
+                RedirectingBack();
+                Sleep(500);
+            }
+        }
+
 
     } while(!validInput);
 }
@@ -145,22 +177,23 @@ void MainMenu() {
 
         if(c != '1' && c != '2' && c != '3' && c != '4') {
             InvalidInputPrompt();
-            Sleep(800);
+            Sleep(700);
         }
 
         switch (c) {
             case '1':
-                printf("Play game (placeholder)\n");
+                RedirectingPrompt(c);
                 Sleep(500);
+                GoToWhiteRoom(&player);
                 break;
             case '2':
                 RedirectingPrompt(c);
-                Sleep(750);
+                Sleep(500);
                 GoToInventory(player);
                 break;
             case '3':
                 RedirectingPrompt(c);
-                Sleep(750);
+                Sleep(500);
                 GoToShop(&player);
                 break;
             case '4':

@@ -10,6 +10,7 @@
 #include "playerVisual.h"
 
 #include "../logic/player.h"
+#include "../logic/utility.h"
 
 void PrintSeparator() {
     printf("\n\n");
@@ -73,31 +74,36 @@ void BorderCheck() {
 }
 
 void InvalidInputPrompt() {
-    printf(RESET"\n\n\n\t\t");
+    printf(RESET sys);
     printf("[SYSTEM]: Invalid input :(");
 }
 
 void RedirectingBack() {
-    printf(RESET"\n\n\n\t\t");
+    printf(RESET sys);
     printf("[SYSTEM]: Redirecting back...");
 }
 
 void RedirectingPrompt(char c) {
-    printf(RESET"\n\n\n\t\t");
+    printf(RESET sys);
     switch(c) {
-        case '1': printf("[SYSTEM]: Redirecting to Battle..."); break;
+        case '1': printf("[SYSTEM]: Redirecting to Black Room..."); break;
         case '2': printf("[SYSTEM]: Redirecting to Inventory..."); break;
         case '3': printf("[SYSTEM]: Redirecting to Shop..."); break;
     }
 }
 
+void RedirectingToBattlePrompt() {
+    printf(RESET sys);
+    printf("[SYSTEM]: Redirecting to Battle...");
+}
+
 void ExitPrompt() {
-    printf(RESET"\n\n\n\t\t");
+    printf(RESET sys);
     printf("[SYSTEM]: Closing game...\n");
 }
 
 void PurchasePrompt(char c, bool success) {
-    printf(RESET"\n\n\n\t\t");
+    printf(RESET sys);
     if(success) {
         switch(c) {
             case '1': printf("[SYSTEM]: Successfully purchased a " HI_RED "[STRIKE]" RESET " sync pair!"); break;
@@ -137,11 +143,11 @@ void DisplayInventory(Player p) {
     //SampleBattle(p);
     
     printf("\n\n\n\n\n");
-    printf(REG_RED"\t\t     [STRIKE] " RESET "Deals 10-20 Damage \t\t\t");
+    printf(REG_RED"\t\t     [STRIKE] " RESET "Deals 10-20 damage \t\t\t");
     printf(REG_BLUE "[TECH] " RESET "Has a 20%% chance of \t\t\t     ");
     printf(REG_YELLOW "[SUPPORT] " RESET "Heals 8-15 HP\n");
 
-    printf("\t\t\t   to the opponent \t\t\t\t making the oppnent " HI_PURPLE "FLINCH" RESET "\t\t\t\ton all ally syncs\n\n");
+    printf("\t\t\t   to the opponent \t\t\t\tmaking the opponent " HI_PURPLE "FLINCH" RESET "\t\t\t\ton all ally syncs\n\n");
     DisplayAllSyncs(p, &max, true);
 
     printf(HI_RED "\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n" RESET);
@@ -179,7 +185,22 @@ void DisplayShop(Player p) {
 
 }
 
+void DisplayBlackRoom(Player p) {
+    printf("\n\n\n\n");
+    printf("\t\t\t\t\t\t\t     ____  _            _      ____                       \n"
+           "\t\t\t\t\t\t\t    | __ )| | __ _  ___| | __ |  _ \\ ___   ___  _ __ ___  \n"
+           "\t\t\t\t\t\t\t    |  _ \\| |/ _` |/ __| |/ / | |_) / _ \\ / _ \\| '_ ` _ \\ \n"
+           "\t\t\t\t\t\t\t    | |_) | | (_| | (__|   <  |  _ < (_) | (_) | | | | | |\n"
+           "\t\t\t\t\t\t\t    |____/|_|\\__,_|\\___|_|\\_\\ |_| \\_\\___/ \\___/|_| |_| |_|\n");
+    //printf("\n\n\n\t\t\t\t\t\t\t\t");
+    printf("\n\n\n");
+    DisplayOmori();
+    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n" RESET, p.floor);
+    printf("\n\t\t\t\t\t\t\t\t\t     Proceed to Battle?\n");
+    printf("\n\t\t\t\t\t\t\t\t\t        " HI_BLUE "[1] Yes\n");
+    printf("\n\t\t\t\t\t\t\t\t\t        " HI_RED  "[2] Go back" RESET);
 
+}
 
 
 #endif 
