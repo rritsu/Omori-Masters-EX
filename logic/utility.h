@@ -12,10 +12,12 @@
 #define SUPPORT_COST 100
 
 #define sys "\n\n\n\t\t"
+#define DELAY 750
 
-
-
+#include <stdbool.h>
 #include <windows.h>
+
+#include "../visual/UIVisual.h"
 
 void HideCursor() {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -26,5 +28,32 @@ void HideCursor() {
     SetConsoleCursorInfo(consoleHandle, &cursorInfo);
 }
 
+char GetInput(int numInputs) {
+    char c = '0';
+    bool validInput = false;
+
+    do {
+        c = _getch();
+        switch(numInputs) {
+            case 1: {
+                if(c == '4') validInput = true;
+                else InvalidInputPrompt();
+                break;
+            }
+            case 2: {
+                if(c == '1' || c == '2') validInput = true;
+                else InvalidInputPrompt();
+                break;
+            }
+            case 4: {
+                if(c == '1' || c == '2' || c == '3' || c == '4') validInput = true;
+                else InvalidInputPrompt();
+                break;
+            }
+        }
+
+    } while(!validInput);   
+    return c;
+}
 
 #endif

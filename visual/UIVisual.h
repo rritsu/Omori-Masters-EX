@@ -1,7 +1,6 @@
 #ifndef UI_VISUAL_H 
 #define UI_VISUAL_H
 
-
 #include <stdio.h>
 #include <string.h>
 
@@ -9,7 +8,7 @@
 #include "enemyVisual.h"
 #include "playerVisual.h"
 
-#include "../logic/player.h"
+#include "../logic/struct.h"
 #include "../logic/utility.h"
 
 void PrintSeparator() {
@@ -76,11 +75,13 @@ void BorderCheck() {
 void InvalidInputPrompt() {
     printf(RESET sys);
     printf("[SYSTEM]: Invalid input :(");
+   // Sleep(DELAY);
 }
 
-void RedirectingBack() {
+void RedirectingBackPrompt() {
     printf(RESET sys);
     printf("[SYSTEM]: Redirecting back...");
+    Sleep(DELAY);
 }
 
 void RedirectingPrompt(char c) {
@@ -90,16 +91,19 @@ void RedirectingPrompt(char c) {
         case '2': printf("[SYSTEM]: Redirecting to Inventory..."); break;
         case '3': printf("[SYSTEM]: Redirecting to Shop..."); break;
     }
+    Sleep(DELAY);
 }
 
 void RedirectingToBattlePrompt() {
     printf(RESET sys);
     printf("[SYSTEM]: Redirecting to Battle...");
+    Sleep(DELAY);
 }
 
 void ExitPrompt() {
     printf(RESET sys);
     printf("[SYSTEM]: Closing game...\n");
+    Sleep(DELAY);
 }
 
 void PurchasePrompt(char c, bool success) {
@@ -114,6 +118,7 @@ void PurchasePrompt(char c, bool success) {
     else {
         printf("[SYSTEM]: You don't have enough gems :(");
     }
+    Sleep(DELAY);
 }
 
 void SampleBattle(Player p) {

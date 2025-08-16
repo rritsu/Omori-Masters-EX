@@ -10,6 +10,7 @@
         "conio.h": "c",
         "stdbool.h": "c",
         "utility.h": "c",
-        "wincon.h": "c"
+        "wincon.h": "c",
+        "playervisual.h": "c"
     }
 }

@@ -8,7 +8,7 @@
 #include "colors.h"
 #include "UIVisual.h"
 
-#include "../logic/player.h"
+#include "../logic/struct.h"
 
 
 void DisplayHP(int quantity, int HP, char syncHP[]) {

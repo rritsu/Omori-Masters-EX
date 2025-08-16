@@ -1,5 +1,5 @@
-#ifndef PLAYER_H 
-#define PLAYER_H
+#ifndef STRUCT_H 
+#define STRUCT_H
 
 typedef struct Sync {
     int HP;
@@ -13,5 +13,10 @@ typedef struct Player {
     int gems;
     int floor;
 } Player;
+
+typedef struct Enemy {
+    Sync syncPair;
+    char type;
+} Enemy;
 
 #endif 
