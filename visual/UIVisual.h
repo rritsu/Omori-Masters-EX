@@ -121,6 +121,23 @@ void PurchasePrompt(char c, bool success) {
     Sleep(DELAY);
 }
 
+void FlinchedSyncPrompt(int syncNum) {
+    printf(RESET sys);
+    switch(syncNum) {
+        case 1: printf("[SYSTEM]: Player's " HI_RED "[STRIKE] sync is " REG_PURPLE " FLINCHED... it cannot move!"); break;
+        case 2: printf("[SYSTEM]: Player's " HI_BLUE "[TECH] sync is " REG_PURPLE " FLINCHED... it cannot move!"); break;
+        case 3: printf("[SYSTEM]: Player's " REG_YELLOW "[SUPPORT] sync is " REG_PURPLE " FLINCHED... it cannot move!"); break;
+    }
+    Sleep(DELAY);
+}
+
+void StrikeMovePrompt(bool isPlayerMove, int damage) {
+    printf(RESET sys);
+    if(isPlayerMove) printf("[SYSTEM]: Player dealt %d damage to the opponent!", damage);
+    else printf("[SYSTEM]: Enemy dealth %d damage to the player!", damage);
+    Sleep(DELAY);
+}
+
 void SampleBattle(Player p) {
     int max = 0;
     printf("\n");
@@ -205,6 +222,15 @@ void DisplayBlackRoom(Player p) {
     printf("\n\t\t\t\t\t\t\t\t\t        " HI_BLUE "[1] Yes\n");
     printf("\n\t\t\t\t\t\t\t\t\t        " HI_RED  "[2] Go back" RESET);
 
+}
+
+void DisplayBattleUI(Player p, Enemy e) {
+    int max = 0;
+    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t\t Floor: %d\n\n" RESET, p.floor);
+    PrintEnemy(e);
+    //printForestBunny();
+   // PrintSeparator();
+    DisplayAllSyncs(p, &max, true);
 }
 
 

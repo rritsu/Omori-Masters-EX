@@ -16,7 +16,7 @@ void DisplayHP(int quantity, int HP, char syncHP[]) {
     int e = 20 - h;
 
     char temp[30];
-    sprintf(temp, HI_CYAN "%2d" RESET " | DU: ",  quantity);
+    sprintf(temp, HI_CYAN "%2d" RESET " | HP: ",  quantity);
     strcpy(syncHP, temp);
    // strcpy(syncHP, "   DU: ");
 

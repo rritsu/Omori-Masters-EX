@@ -10,6 +10,7 @@ int main() {
     HideCursor();
 
     ConfigureScreenSettings();
+    InitializeRNG();
     MainMenu();
   
 

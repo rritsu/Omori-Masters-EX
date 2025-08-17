@@ -6,6 +6,7 @@
 #include "struct.h"
 #include "utility.h"
 #include "battle.c"
+#include "values.h"
 
 void ConfigureScreenSettings() {
     BorderCheck();
@@ -16,12 +17,15 @@ void ConfigureScreenSettings() {
 void InitializePlayer(Player* player) {
     player->strikeSync.HP = 100;
     player->strikeSync.quantity = 1;
+    player->strikeSync.isFlinched = false;
 
     player->techSync.HP = 100;
     player->techSync.quantity = 1;
+    player->strikeSync.isFlinched = false;
 
     player->supportSync.HP = 100;
     player->supportSync.quantity = 1;
+    player->strikeSync.isFlinched = false;
 
     player->gems = 1000;
     player->floor = 1;
@@ -91,7 +95,7 @@ void GoToWhiteRoom(Player* p) {
     switch(c) {
         case '1':
             RedirectingToBattlePrompt();
-            BattleLoop();
+            BattleLoop(p);
             break;
         case '2':
             RedirectingBackPrompt();
