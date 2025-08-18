@@ -12,6 +12,7 @@
         "utility.h": "c",
         "wincon.h": "c",
         "playervisual.h": "c",
-        "struct.h": "c"
+        "struct.h": "c",
+        "values.h": "c"
     }
 }

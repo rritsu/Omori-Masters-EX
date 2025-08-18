@@ -14,25 +14,7 @@ void ConfigureScreenSettings() {
    // Sleep(500);
 }
 
-void InitializePlayer(Player* player) {
-    player->strikeSync.HP = 12;
-    player->strikeSync.quantity = 1;
-    player->strikeSync.isFlinched = false;
-    player->strikeSync.flinchCounter = 0;
 
-    player->techSync.HP = 100;
-    player->techSync.quantity = 1;
-    player->techSync.isFlinched = false;
-    player->techSync.flinchCounter = 0;
-
-    player->supportSync.HP = 100;
-    player->supportSync.quantity = 1;
-    player->supportSync.isFlinched = false;
-    player->supportSync.flinchCounter = 0;
-
-    player->gems = 0;
-    player->floor = 1;
-}
 
 void GoToInventory(Player p) {
     system("cls");

@@ -122,6 +122,18 @@ void PurchasePrompt(char c, bool success) {
     Sleep(DELAY);
 }
 
+void ReturnToRoomNotice() {
+    printf(RESET sys);
+    printf("[SYSTEM]: Returning to Black Room...\n");
+    Sleep(LONG_DELAY);
+}
+
+void ReturnToMenuNotice() {
+    printf(RESET sys);
+    printf("[SYSTEM]: Returning to Main Menu...\n");
+    Sleep(DELAY);
+}
+
 void DisplayBattleLog(char log[LOG_LENGTH]) {
     //printf(RESET sys);
     printf(RESET "\t\t");
@@ -131,9 +143,17 @@ void DisplayBattleLog(char log[LOG_LENGTH]) {
 
 void FlinchedSyncLog(char log[LOG_LENGTH], int syncNum) {
     switch(syncNum) {
-        case 1: sprintf(log, sys "[SYSTEM]: Player's " HI_RED "[STRIKE]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot move!"); break;
-        case 2: sprintf(log, sys "[SYSTEM]: Player's " HI_BLUE "[TECH]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot move!"); break;
-        case 3: sprintf(log, sys "[SYSTEM]: Player's " REG_YELLOW "[SUPPORT]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot move!"); break;
+        case 1: sprintf(log, sys "[SYSTEM]: Player's " HI_RED "[STRIKE]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot perform!"); break;
+        case 2: sprintf(log, sys "[SYSTEM]: Player's " HI_BLUE "[TECH]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot perform!"); break;
+        case 3: sprintf(log, sys "[SYSTEM]: Player's " REG_YELLOW "[SUPPORT]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot perform!"); break;
+    }
+}
+
+void SyncIsDownLog(char log[LOG_LENGTH], int syncNum) {
+    switch(syncNum) {
+        case 1: sprintf(log, sys "[SYSTEM]: Player's " HI_RED "[STRIKE]" RESET " sync is" REG_RED " DOWN" RESET "... it cannot move!"); break;
+        case 2: sprintf(log, sys "[SYSTEM]: Player's " HI_BLUE "[TECH]" RESET " sync is" REG_RED " DOWN" RESET "... it cannot move!"); break;
+        case 3: sprintf(log, sys "[SYSTEM]: Player's " REG_YELLOW "[SUPPORT]" RESET " sync is" REG_RED " DOWN" RESET "... it cannot move!"); break;
     }
 }
 
@@ -155,8 +175,8 @@ void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int lastSync) {
     char add[100];
 //    printf("\n\t\t");
     switch(lastSync) {
-        case 1: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE] sync!", damage); break; 
-        default: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE] sync!", damage); break; 
+        case 1: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE]" RESET " sync!", damage); break; 
+        default: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE]" RESET " sync!", damage); break; 
     }
     strcat(log, "\n\t\t");
     strcat(log, add);
@@ -169,14 +189,50 @@ void DefeatedEnemyLog(char log[LOG_LENGTH]) {
     // sprintf(add, RESET "[SYSTEM]: Player has defeated the Enemy!");
     // strcat(log, "\n\t\t");
     // strcat(log, add);
-    sprintf(log, RESET sys "[SYSTEM]: Player has defeated the Enemy!");
+    sprintf(log, RESET sys "[SYSTEM]: Player has defeated the Enemy...");
 
+}
+
+void PlayerWinsLog(char log[LOG_LENGTH]) {
+    // char add[100];
+    // sprintf(add, RESET "[SYSTEM]: You won!");
+    // strcat(log, "\n\t\t");
+    // strcat(log, add);
+    sprintf(log, RESET sys "[SYSTEM]: You WON!");
+    strcat(log, "\n\t\tPress any key to continue...");
+}
+
+void PlayerLossesLog(char log[LOG_LENGTH]) {
+    // char add[100];
+    // sprintf(add, RESET "[SYSTEM]: You lost!");
+    // strcat(log, "\n\t\t");
+    // strcat(log, add);
+    sprintf(log, RESET sys "[SYSTEM]: You LOST!");
+    strcat(log, "\n\t\tPress any key to continue...");
 }
 
 void DefeatedSyncLog(char log[LOG_LENGTH], int syncNum) {
     switch(syncNum) {
         case 1: sprintf(log, RESET sys "[SYSTEM]: Enemy has defeated Player's " HI_RED "[STRIKE]" RESET "!"); break;
     }
+}
+
+void RevivedSyncLog(char log[LOG_LENGTH], int syncNum) {
+    char add[100];
+    switch(syncNum) {
+        case 1: sprintf(add, RESET "[SYSTEM]: Player's " HI_RED "[STRIKE]" RESET " sync has been revived and rejoined the fight!"); break;
+        case 2: sprintf(add, RESET "[SYSTEM]: Player's " HI_BLUE "[TECH]" RESET " sync has been revived and rejoined the fight!"); break;
+        case 3: sprintf(add, RESET "[SYSTEM]: Player's " REG_YELLOW "[SUPPORT]" RESET " sync has been revived and rejoined the fight!"); break;
+    }
+    strcat(log, "\n\t\t");
+    strcat(log, add);
+}
+
+void NoStrikeSyncsLog(char log[LOG_LENGTH]) {
+    char add[100];
+    sprintf(add, RESET "[SYSTEM]: Player has lost all of their " HI_RED "[STRIKE]" RESET " syncs...");
+    strcat(log, "\n\t\t");
+    strcat(log, add);
 }
 
 void SampleBattle(Player p) {

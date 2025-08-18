@@ -5,6 +5,51 @@
 //#include "struct.h"
 #include "../visual/UIVisual.h"
 
+void InitializePlayer(Player* player) {
+    player->strikeSync.HP = 4;
+    player->strikeSync.quantity = 2;
+    player->strikeSync.isFlinched = false;
+    player->strikeSync.flinchCounter = 0;
+
+    player->techSync.HP = 100;
+    player->techSync.quantity = 1;
+    player->techSync.isFlinched = false;
+    player->techSync.flinchCounter = 0;
+
+    player->supportSync.HP = 100;
+    player->supportSync.quantity = 1;
+    player->supportSync.isFlinched = false;
+    player->supportSync.flinchCounter = 0;
+
+    player->gems = 0;
+    player->floor = 1;
+}
+
+
+void ResetPlayerStats(Player* player) {
+    player->floor = 1;
+    player->strikeSync.HP = 100;
+    player->strikeSync.quantity = 1;
+    player->strikeSync.isFlinched = false;
+    player->strikeSync.flinchCounter = 0;
+
+    if(player->techSync.quantity <= 0) {
+        player->techSync.quantity = 1;
+    }
+    if(player->supportSync.quantity <= 0) {
+        player->supportSync.quantity = 1;
+    }
+
+    player->techSync.HP = 100;
+    player->techSync.isFlinched = false;
+    player->techSync.flinchCounter = 0;
+
+    player->supportSync.HP = 100;
+    player->supportSync.isFlinched = false;
+    player->supportSync.flinchCounter = 0;
+
+}
+
 
 void UpdateScreenWithLog(Player p, Enemy e, char log[LOG_LENGTH]) {
     system("cls");
@@ -12,7 +57,7 @@ void UpdateScreenWithLog(Player p, Enemy e, char log[LOG_LENGTH]) {
     DisplayBattleLog(log);
 }
 
-void UpdateScreen(Player p, Enemy e, char log[LOG_LENGTH]) {
+void UpdateScreen(Player p, Enemy e) {
     system("cls");
     DisplayBattleUI(p, e);
 }
@@ -23,7 +68,7 @@ void InitializeEnemy(Enemy* e, char type) {
             e->dmgRange[0] = 10; e->dmgRange[1] = 20;
             e->flinchRate = 20;
             e->healRange[0] = 8; e->healRange[1] = 15;
-            e->HP = 100;
+            e->HP = 40;
             e->spriteID = GenerateRandomNum(1, 20);
             break;
         case '1': 
@@ -62,35 +107,35 @@ void CheckPlayerSyncQuantity(Player* p, Enemy e, int syncNum, char log[LOG_LENGT
                 UpdateScreenWithLog(*p, e, log);
                 Sleep(LOG_DELAY);
                 if(leftover <= 0) {
-                    //no lefotvers prompt
-                    //finish this
+                    NoStrikeSyncsLog(log);
                 }
                 else {
                     p->strikeSync.HP = 100; //revive and make HP full
-                    //revive prompt
+                    RevivedSyncLog(log, syncNum);
                 }
+                UpdateScreenWithLog(*p, e, log);
+                Sleep(LONG_DELAY);
             }
             break;
     }
 }
 
-// void CheckEnemySyncHP(int HP, char log[LOG_LENGTH]) {
-//     if(HP <= 0) {
-//         DefeatedEnemyLog(log);
-//         //UpdateScreenWithLog(p, *e, log);
-//     }
-// }
-
 void PlayerStrikeMove(Player p, Enemy* e, char log[LOG_LENGTH]) {
-    if(!p.strikeSync.isFlinched) {
-        int damage = GenerateRandomNum(10, 20);
-        e->HP -= damage;
-        PlayerStrikeMoveLog(log, damage);
-        UpdateScreenWithLog(p, *e, log);
-        Sleep(LOG_DELAY);
+    if(p.strikeSync.HP > 0) {
+        if(!p.strikeSync.isFlinched) {
+            int damage = GenerateRandomNum(10, 20);
+            e->HP -= damage;
+            PlayerStrikeMoveLog(log, damage);
+            UpdateScreenWithLog(p, *e, log);
+            Sleep(LOG_DELAY);
+        }
+        else {
+            FlinchedSyncLog(log, 1);
+        }
     }
     else {
-        FlinchedSyncLog(log, 1);
+        //prompt that its dead, it cannot perform
+        SyncIsDownLog(log, 1);
     }
 }
 
@@ -126,18 +171,20 @@ bool CheckPlayerMove(Player p, int lastSync) {
     bool moveSuccess = false;
     switch(lastSync) {
         case 1: 
-            if(!p.strikeSync.isFlinched) moveSuccess = true;
+            if(!p.strikeSync.isFlinched && p.strikeSync.HP > 0)
+                moveSuccess = true;
             break;
         case 2:
-            if(!p.techSync.isFlinched) moveSuccess = true;
+            if(!p.techSync.isFlinched && p.techSync.HP > 0)
+                moveSuccess = true;
             break;
         case 3:
-            if(!p.supportSync.isFlinched) moveSuccess = true;
+            if(!p.supportSync.isFlinched && p.supportSync.HP > 0)
+                moveSuccess = true;
             break;
     }
     return moveSuccess;
 }
-
 
 void BattleLoop(Player* player) {
     Enemy enemy;
@@ -169,9 +216,25 @@ void BattleLoop(Player* player) {
         else if(enemy.HP <= 0) {
             DefeatedEnemyLog(log);
             UpdateScreenWithLog(*player, enemy, log);
+            Sleep(LONG_DELAY);
         }
 
     } while (player->strikeSync.quantity > 0 && enemy.HP > 0);
 
-    char c = GetInput(1); //continue/confirm prompt
+    if(player->strikeSync.quantity <= 0) {
+        PlayerLossesLog(log);
+        UpdateScreenWithLog(*player, enemy, log);
+        ResetPlayerStats(player);
+
+    }
+    else if(enemy.HP <= 0) {
+        PlayerWinsLog(log);
+        UpdateScreenWithLog(*player, enemy, log);   
+    }
+    
+    Sleep(LOG_DELAY);
+    char c = _getch(); //continue/confirm prompt
+    UpdateScreen(*player, enemy);
+    ReturnToRoomNotice();
+
 }

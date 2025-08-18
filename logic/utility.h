@@ -4,6 +4,7 @@
 #define sys "\n\n\t\t"
 #define DELAY 750
 #define LOG_DELAY 1200
+#define LONG_DELAY 1800
 
 #include <stdbool.h>
 #include <windows.h>

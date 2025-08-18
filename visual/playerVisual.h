@@ -14,7 +14,9 @@
 void DisplayHP(int quantity, int HP, char syncHP[]) {
     float h = (float)HP / 5.0f;
     if(h > 0 && h < 1) h = 1.0f;
-    int e = 20 - h;
+    else if(h < 0) h = 0.0f;
+
+    int e = 20 - (int)h;
 
     char temp[30];
     sprintf(temp, HI_CYAN "%2d" RESET " | HP: ",  quantity);

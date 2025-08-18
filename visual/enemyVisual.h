@@ -16,7 +16,10 @@ int GetEnemyMaxHP(char type) {
 void DisplayEnemyHP(int HP, char type) {
 	float h = (float)HP / 5.0f;
 	if(h > 0 && h < 1) h = 1.0f;
-	int e = 20 - h;
+	else if(h < 0) h = 0.0f;
+	
+	int e = 20 - (int)h;
+
 	int maxHP = GetEnemyMaxHP(type);
 	printf("HP: ");
 
