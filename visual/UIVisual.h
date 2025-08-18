@@ -73,19 +73,19 @@ void BorderCheck() {
            "╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 }
 
-void InvalidInputPrompt() {
+void InvalidInputNotice() {
     printf(RESET);
     printf("\n\t\t[SYSTEM]: Invalid input :(");
    // Sleep(DELAY);
 }
 
-void RedirectingBackPrompt() {
+void RedirectingBackNotice() {
     printf(RESET sys);
     printf("[SYSTEM]: Redirecting back...");
     Sleep(DELAY);
 }
 
-void RedirectingPrompt(char c) {
+void RedirectingNotice(char c) {
     printf(RESET sys);
     switch(c) {
         case '1': printf("[SYSTEM]: Redirecting to Black Room..."); break;
@@ -95,19 +95,19 @@ void RedirectingPrompt(char c) {
     Sleep(DELAY);
 }
 
-void RedirectingToBattlePrompt() {
+void RedirectingToBattleNotice() {
     printf(RESET sys);
     printf("[SYSTEM]: Redirecting to Battle...");
     Sleep(DELAY);
 }
 
-void ExitPrompt() {
+void ExitGameNotice() {
     printf(RESET sys);
     printf("[SYSTEM]: Closing game...\n");
     Sleep(DELAY);
 }
 
-void PurchasePrompt(char c, bool success) {
+void PurchaseNotice(char c, bool success) {
     printf(RESET sys);
     if(success) {
         switch(c) {
@@ -198,7 +198,7 @@ void PlayerWinsLog(char log[LOG_LENGTH]) {
     // sprintf(add, RESET "[SYSTEM]: You won!");
     // strcat(log, "\n\t\t");
     // strcat(log, add);
-    sprintf(log, RESET sys "[SYSTEM]: You WON!");
+    sprintf(log, RESET sys "[SYSTEM]: You WON! You may proceed to the next floor");
     strcat(log, "\n\t\tPress any key to continue...");
 }
 
@@ -207,7 +207,7 @@ void PlayerLossesLog(char log[LOG_LENGTH]) {
     // sprintf(add, RESET "[SYSTEM]: You lost!");
     // strcat(log, "\n\t\t");
     // strcat(log, add);
-    sprintf(log, RESET sys "[SYSTEM]: You LOST!");
+    sprintf(log, RESET sys "[SYSTEM]: You LOST! You have been returned to Floor 1");
     strcat(log, "\n\t\tPress any key to continue...");
 }
 
@@ -235,18 +235,18 @@ void NoStrikeSyncsLog(char log[LOG_LENGTH]) {
     strcat(log, add);
 }
 
-void SampleBattle(Player p) {
-    int max = 0;
-    printf("\n");
-    PrintBasil();
-    //DisplaySyncPairs(p);
+// void SampleBattle(Player p) {
+//     int max = 0;
+//     printf("\n");
+//     PrintBasil();
+//     //DisplaySyncPairs(p);
 
-    PrintSeparator();
+//     PrintSeparator();
 
-    printf("\n");
-    DisplayAllSyncs(p, &max, true);
-   // DisplayStrikePair(p);
-}
+//     printf("\n");
+//     DisplayAllSyncs(p, &max, true);
+//    // DisplayStrikePair(p);
+// }
 
 void DisplayInventory(Player p) {
     int max = 0;
@@ -265,7 +265,7 @@ void DisplayInventory(Player p) {
     printf(REG_YELLOW "[SUPPORT] " RESET "Heals 8-15 HP\n");
 
     printf("\t\t\t   to the opponent \t\t\t\tmaking the opponent " HI_PURPLE "FLINCH" RESET "\t\t\t\ton all ally syncs\n\n");
-    DisplayAllSyncs(p, &max, true);
+    DisplayAllSyncs(p, &max, true, true);
     printf(HI_RED "\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n\n" RESET);
 }
 
@@ -308,20 +308,21 @@ void DisplayBlackRoom(Player p) {
            "\t\t\t\t\t\t\t    | |_) | | (_| | (__|   <  |  _ < (_) | (_) | | | | | |\n"
            "\t\t\t\t\t\t\t    |____/|_|\\__,_|\\___|_|\\_\\ |_| \\_\\___/ \\___/|_| |_| |_|\n");
     //printf("\n\n\n\t\t\t\t\t\t\t\t");
-    printf("\n\n\n");
+    printf("\n\n");
     DisplayOmori();
     printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n" RESET, p.floor);
     printf("\n\t\t\t\t\t\t\t\t\t     Proceed to Battle?\n");
-    printf("\n\t\t\t\t\t\t\t\t\t        " HI_BLUE "[1] Yes\n");
-    printf("\n\t\t\t\t\t\t\t\t\t        " HI_RED  "[2] Go back\n" RESET);
+    printf("\n\t\t\t\t\t\t\t\t\t      " HI_GREEN "[1] Yes\n");
+    printf("\n\t\t\t\t\t\t\t\t\t      " HI_BLUE "[2] Check Inventory\n" RESET);
+    printf("\n\t\t\t\t\t\t\t\t\t      " HI_RED  "[3] Go back" RESET);
 
 }
 
-void DisplayBattleUI(Player p, Enemy e) {
+void DisplayBattleUI(Player p, Enemy e, bool isPlayerTurn) {
     int max = 0;
     printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t\t Floor: %d\n\n" RESET, p.floor);
     PrintEnemy(e);
-    DisplayAllSyncs(p, &max, true);
+    DisplayAllSyncs(p, &max, true, isPlayerTurn);
     printf(REG_RED "\n\t\t\t\t\t\t\t\t\t\t[4] End Turn" RESET);
 }
 

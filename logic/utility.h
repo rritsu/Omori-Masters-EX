@@ -42,19 +42,19 @@ char GetInput(int numInputs) {
         switch(numInputs) {
             case 1: 
                 if(c == '4') validInput = true;
-                else InvalidInputPrompt();
+                else InvalidInputNotice();
                 break;
             case 2: 
                 if(c == '1' || c == '2') validInput = true;
-                else InvalidInputPrompt();
+                else InvalidInputNotice();
                 break;
             case 3: 
                 if(c == '1' || c == '2' || c == '3') validInput = true;
-                else InvalidInputPrompt();
+                else InvalidInputNotice();
                 break;
             case 4: 
                 if(c == '1' || c == '2' || c == '3' || c == '4') validInput = true;
-                else InvalidInputPrompt();
+                else InvalidInputNotice();
                 break;
             
         }

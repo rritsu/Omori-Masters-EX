@@ -21,7 +21,7 @@ void GoToInventory(Player p) {
     DisplayInventory(p);
     char c = GetInput(1);
     if(c == '4')
-        RedirectingBackPrompt();
+        RedirectingBackNotice();
 }
 
 void GoToShop(Player* p) {
@@ -35,28 +35,28 @@ void GoToShop(Player* p) {
                 if(p->gems >= STRIKE_COST) {
                     p->gems -= STRIKE_COST;
                     p->strikeSync.quantity++;
-                    PurchasePrompt(c, true);
+                    PurchaseNotice(c, true);
                 }
-                else PurchasePrompt(c, false);
+                else PurchaseNotice(c, false);
                 break;
             case '2':
                 if(p->gems >= TECH_COST) {
                     p->gems -= TECH_COST;
                     p->techSync.quantity++;
-                    PurchasePrompt(c, true);
+                    PurchaseNotice(c, true);
                 }
-                else PurchasePrompt(c, false);
+                else PurchaseNotice(c, false);
                 break;
             case '3':
                 if(p->gems >= SUPPORT_COST) {
                     p->gems -= SUPPORT_COST;
                     p->supportSync.quantity++;
-                    PurchasePrompt(c, true);
+                    PurchaseNotice(c, true);
                 }
-                else PurchasePrompt(c, false);
+                else PurchaseNotice(c, false);
                 break;
             case '4':
-                RedirectingBackPrompt();
+                RedirectingBackNotice();
                 break;
         }
 
@@ -69,24 +69,32 @@ void ConfirmExit(bool* exitGame) {
     char c = GetInput(2);
     if(c == '1') {
         *exitGame = true;
-        ExitPrompt();
+        ExitGameNotice();
     }
 }
 
 void GoToWhiteRoom(Player* p) {
-    system("cls");
-    DisplayBlackRoom(*p);
-    char c = GetInput(2);
-    switch(c) {
+    char c;
+    do {
+        CheckPlayerStatus(p);
+        system("cls");
+        DisplayBlackRoom(*p);
+        c = GetInput(3);
+
+        switch(c) {
         case '1':
-            RedirectingToBattlePrompt();
+            RedirectingToBattleNotice();
             BattleLoop(p);
             break;
         case '2':
-            RedirectingBackPrompt();
+            RedirectingNotice(c);
+            GoToInventory(*p);
             break;
-    }
-    //might have to make a do-while loop later, so that player stays in the room after battle
+        case '3':
+            RedirectingBackNotice();
+            break;
+        }
+    } while(c != '3');
 }
 
 void MainMenu() {
@@ -99,15 +107,15 @@ void MainMenu() {
         char c = GetInput(4);
         switch (c) {
             case '1':
-                RedirectingPrompt(c);
+                RedirectingNotice(c);
                 GoToWhiteRoom(&player);
                 break;
             case '2':
-                RedirectingPrompt(c);
+                RedirectingNotice(c);
                 GoToInventory(player);
                 break;
             case '3':
-                RedirectingPrompt(c);
+                RedirectingNotice(c);
                 GoToShop(&player);
                 break;
             case '4':
