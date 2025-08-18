@@ -12,7 +12,8 @@
 
 
 void DisplayHP(int quantity, int HP, char syncHP[]) {
-    int h = HP / 5;
+    float h = (float)HP / 5.0f;
+    if(h > 0 && h < 1) h = 1.0f;
     int e = 20 - h;
 
     char temp[30];
@@ -20,7 +21,7 @@ void DisplayHP(int quantity, int HP, char syncHP[]) {
     strcpy(syncHP, temp);
    // strcpy(syncHP, "   DU: ");
 
-    for(int i = 0; i < h; i++) {
+    for(int i = 0; i < (int)h; i++) {
         if(HP > 65) {
             strcat(syncHP, HI_GREEN "█" RESET);
         }
@@ -39,16 +40,24 @@ void DisplayHP(int quantity, int HP, char syncHP[]) {
     strcat(syncHP, "  ");
 }
 
-void DisplayStrikePair(Player p, char strike[20][150], bool displayInfo, int* max) {
+void DisplayStrikePair(Sync sync, char strike[20][150], bool displayInfo, int* max) {
     char r0[100] =  HI_RED "╔═════───────  1  ───────═════╗" RESET;
     char r1[100] =  HI_RED "║                             " REG_PURPLE "║" RESET;
     char r2[100] =  HI_RED "║" HI_BLACK "     ▒▒░                     " REG_PURPLE "║" RESET;
     char r3[100] =  HI_RED "│" HI_BLACK "      ░░▒▒░                  " REG_PURPLE "│" RESET;
     char r4[100] =  HI_RED "│" HI_BLACK "      ░▓▒▒▒░                 " REG_PURPLE "│" RESET;
     char r5[100] =  HI_RED "│" HI_BLACK "       ░░▒▒░▒░               " REG_PURPLE "│" RESET;
-    char r6[100] =  HI_RED "│" HI_BLACK "        ░▒▒▒░░░              " REG_PURPLE "│" RESET;
-    char r7[100] =  HI_RED "│" HI_BLACK "         ▒░░▒░░░░            " REG_PURPLE "│" RESET;
-    char r8[100] =  HI_RED "│" HI_BLACK "          ░░▒▒░░░▒░          " REG_PURPLE "│" RESET;
+    char r6[150], r7[150], r8[150];
+    if(!sync.isFlinched) {
+        sprintf(r6, HI_RED "│" HI_BLACK "        ░▒▒▒░░░              " REG_PURPLE "│" RESET);
+        sprintf(r7,  HI_RED "│" HI_BLACK "         ▒░░▒░░░░            " REG_PURPLE "│" RESET);
+        sprintf(r8,  HI_RED "│" HI_BLACK "          ░░▒▒░░░▒░          " REG_PURPLE "│" RESET);
+    }
+    else {
+        sprintf(r6, HI_RED "│" HI_PURPLE "═════════════════════════════" REG_PURPLE "│" RESET);
+        sprintf(r7, HI_RED "│" BOLD_WHITE "         Flinched: %d         " REG_PURPLE "│" RESET, sync.flinchCounter);
+        sprintf(r8, HI_RED "│" HI_PURPLE "═════════════════════════════" REG_PURPLE "│" RESET);
+    }
     char r9[100] =  HI_RED "│" HI_BLACK "          ░▒▒░▒░░▓█▓░        " REG_PURPLE "│" RESET;
     char r10[100] = HI_RED "│" HI_BLACK "            ░▓░▒▒  ▓▒▒       " REG_PURPLE "│" RESET;
     char r11[100] = HI_RED "│" HI_BLACK "             ░░     ░▓█▒     " REG_PURPLE "│" RESET;
@@ -69,23 +78,31 @@ void DisplayStrikePair(Player p, char strike[20][150], bool displayInfo, int* ma
     if(displayInfo) {
         char r15[40]  =      "                               ";
         char r16[300];
-        DisplayHP(p.strikeSync.quantity, p.strikeSync.HP, r16);
+        DisplayHP(sync.quantity, sync.HP, r16);
         strcpy(strike[15], r15);
         strcpy(strike[16], r16);
         *max = 16 + 1;
     }
 }
 
-void DisplayTechPair(Player p, char tech[20][150], bool displayInfo) {
+void DisplayTechPair(Sync sync, char tech[20][150], bool displayInfo) {
     char r0[100] =  HI_BLUE "╔═════───────  2  ───────═════╗" RESET;
     char r1[100] =  HI_BLUE "║                             " REG_PURPLE "║" RESET;
     char r2[100] =  HI_BLUE "║" HI_BLACK "         ▒▓██▓▓▓▓░           " REG_PURPLE "║" RESET;
     char r3[100] =  HI_BLUE "│" HI_BLACK "       ░▓▒▓▓▓▒▒█▒▒▒          " REG_PURPLE "│" RESET;
     char r4[100] =  HI_BLUE "│" HI_BLACK "       ░█▒░▓░█▓▒▓▒▓▓         " REG_PURPLE "│" RESET;
     char r5[100] =  HI_BLUE "│" HI_BLACK "       ░█░░░▓▒▓▓█▓▒▒▓░       " REG_PURPLE "│" RESET;
-    char r6[100] =  HI_BLUE "│" HI_BLACK "        ▓▒░░▓▒░█▓▒░▒▒        " REG_PURPLE "│" RESET;
-    char r7[100] =  HI_BLUE "│" HI_BLACK "         ▒▓▓▒░▒▓░▒▓▒░        " REG_PURPLE "│" RESET;
-    char r8[100] =  HI_BLUE "│" HI_BLACK "            ▒▓░░▓░▒▒         " REG_PURPLE "│" RESET;
+    char r6[150], r7[150], r8[150];
+    if(!sync.isFlinched) {
+        sprintf(r6, HI_BLUE "│" HI_BLACK "        ▓▒░░▓▒░█▓▒░▒▒        " REG_PURPLE "│" RESET);
+        sprintf(r7, HI_BLUE "│" HI_BLACK "         ▒▓▓▒░▒▓░▒▓▒░        " REG_PURPLE "│" RESET);
+        sprintf(r8, HI_BLUE "│" HI_BLACK "            ▒▓░░▓░▒▒         " REG_PURPLE "│" RESET);
+    }
+    else {
+        sprintf(r6, HI_BLUE "│" HI_PURPLE "═════════════════════════════" REG_PURPLE "│" RESET);
+        sprintf(r7, HI_BLUE "│" BOLD_WHITE "         Flinched: %d         " REG_PURPLE "│" RESET, sync.flinchCounter);
+        sprintf(r8, HI_BLUE "│" HI_PURPLE "═════════════════════════════" REG_PURPLE "│" RESET);
+    }
     char r9[100] =  HI_BLUE "│" HI_BLACK "                ░█░▒▓░       " REG_PURPLE "│" RESET;
     char r10[100] = HI_BLUE "│" HI_BLACK "                 ░▓░░▒       " REG_PURPLE "│" RESET;
     char r11[100] = HI_BLUE "│" HI_BLACK "                  ▒▒░▒▓      " REG_PURPLE "│" RESET;
@@ -105,22 +122,30 @@ void DisplayTechPair(Player p, char tech[20][150], bool displayInfo) {
     if(displayInfo) {
         char r15[40]  =      "                               ";
         char r16[300];
-        DisplayHP(p.techSync.quantity, p.techSync.HP, r16);
+        DisplayHP(sync.quantity, sync.HP, r16);
         strcpy(tech[15], r15);
         strcpy(tech[16], r16);
     }
 }
 
-void DisplaySupportPair(Player p, char support[20][150], bool displayInfo) {
+void DisplaySupportPair(Sync sync, char support[20][150], bool displayInfo) {
     char r0[100] =  REG_YELLOW "╔═════───────  3  ───────═════╗" RESET;
     char r1[100] =  REG_YELLOW "║                             " REG_PURPLE "║" RESET ;
     char r2[100] =  REG_YELLOW "║" HI_BLACK "               ░▓▒           " REG_PURPLE "║" RESET;
     char r3[100] =  REG_YELLOW "│" HI_BLACK "       ░▒▒░░▓▒░░▓▒           " REG_PURPLE "│" RESET;
     char r4[100] =  REG_YELLOW "│" HI_BLACK "      █░░▒▒░▒▓▓██▒           " REG_PURPLE "│" RESET;
     char r5[100] =  REG_YELLOW "│" HI_BLACK "    ░▒▓░▓▓▒▓▓▓▒▒▓▓░▒▒░       " REG_PURPLE "│" RESET;
-    char r6[100] =  REG_YELLOW "│" HI_BLACK "         ░▒▓▒▒░▓▒▓▒░░░▓▒     " REG_PURPLE "│" RESET;
-    char r7[100] =  REG_YELLOW "│" HI_BLACK "        ░▓▒▒▒░░░░░░░░░░▒▒    " REG_PURPLE "│" RESET;
-    char r8[100] =  REG_YELLOW "│" HI_BLACK "        ▒▓▒▒▒░░░░░░░░░░░▓    " REG_PURPLE "│" RESET;
+    char r6[150], r7[150], r8[150];
+    if(!sync.isFlinched) {
+        sprintf(r6, REG_YELLOW "│" HI_BLACK "         ░▒▓▒▒░▓▒▓▒░░░▓▒     " REG_PURPLE "│" RESET);
+        sprintf(r7, REG_YELLOW "│" HI_BLACK "        ░▓▒▒▒░░░░░░░░░░▒▒    " REG_PURPLE "│" RESET);
+        sprintf(r8, REG_YELLOW "│" HI_BLACK "        ▒▓▒▒▒░░░░░░░░░░░▓    " REG_PURPLE "│" RESET);
+    }
+    else {
+        sprintf(r6, REG_YELLOW "│" HI_PURPLE "═════════════════════════════" REG_PURPLE "│" RESET);
+        sprintf(r7, REG_YELLOW "│" BOLD_WHITE "         Flinched: %d         " REG_PURPLE "│" RESET, sync.flinchCounter);
+        sprintf(r8, REG_YELLOW "│" HI_PURPLE "═════════════════════════════" REG_PURPLE "│" RESET);
+    }
     char r9[100] =  REG_YELLOW "│" HI_BLACK "       ░▓▒▒░░░░░░░░░░░░░▒    " REG_PURPLE "│" RESET;
     char r10[100] = REG_YELLOW "│" HI_BLACK "       ░▓▒▒░░░░░░░░░░░░▓░    " REG_PURPLE "│" RESET;
     char r11[100] = REG_YELLOW "│" HI_BLACK "          ░▒▒▒░░░░░░░░░▓░    " REG_PURPLE "│" RESET;
@@ -140,7 +165,7 @@ void DisplaySupportPair(Player p, char support[20][150], bool displayInfo) {
     if(displayInfo) {
         char r15[40]  =      "                               ";
         char r16[300];
-        DisplayHP(p.supportSync.quantity, p.supportSync.HP, r16);
+        DisplayHP(sync.quantity, sync.HP, r16);
         strcpy(support[15], r15);
         strcpy(support[16], r16);
     }
@@ -154,9 +179,9 @@ void DisplayAllSyncs(Player p, int* max, bool displayInfo) {
     char support[20][150];
     char padding[21] = "                    ";
 
-    DisplayStrikePair(p, strike, displayInfo, max);
-    DisplayTechPair(p, tech, displayInfo);
-    DisplaySupportPair(p, support, displayInfo);
+    DisplayStrikePair(p.strikeSync, strike, displayInfo, max);
+    DisplayTechPair(p.techSync, tech, displayInfo);
+    DisplaySupportPair(p.supportSync, support, displayInfo);
 
     // for(int i = 0; i < *max; i++) {
     //     char temp[700];

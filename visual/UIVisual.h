@@ -10,6 +10,7 @@
 
 #include "../logic/struct.h"
 #include "../logic/utility.h"
+#include "../logic/values.h"
 
 void PrintSeparator() {
     printf("\n\n");
@@ -20,13 +21,13 @@ void DisplayMenuOptions() {
     printf(HI_YELLOW"\t\t\t\t\t\t\t\t\t     [1] Play Game\n\n");
     printf(HI_BLUE  "\t\t\t\t\t\t\t\t\t     [2] Inventory\n\n");
     printf(HI_GREEN "\t\t\t\t\t\t\t\t\t     [3] Shop\n\n");
-    printf(HI_RED   "\t\t\t\t\t\t\t\t\t     [4] Quit\n\n\n\n\n\n" RESET);
+    printf(HI_RED   "\t\t\t\t\t\t\t\t\t     [4] Quit\n\n\n\n\n\n\n" RESET);
 }
 
 void DisplayExitConfirmation() {
     printf(HI_CYAN"\t\t\t\t\t\t\t\t\t     Confirm Exit?\n\n");
     printf(HI_RED "\t\t\t\t\t\t\t\t\t        [1] Yes\n\n");
-    printf(HI_BLUE"\t\t\t\t\t\t\t\t\t        [2] No \n" RESET);
+    printf(HI_BLUE"\t\t\t\t\t\t\t\t\t        [2] No \n\n" RESET);
 }
 
 void DisplayMainMenu(bool showExitPrompt) {
@@ -73,8 +74,8 @@ void BorderCheck() {
 }
 
 void InvalidInputPrompt() {
-    printf(RESET sys);
-    printf("[SYSTEM]: Invalid input :(");
+    printf(RESET);
+    printf("\n\t\t[SYSTEM]: Invalid input :(");
    // Sleep(DELAY);
 }
 
@@ -121,21 +122,61 @@ void PurchasePrompt(char c, bool success) {
     Sleep(DELAY);
 }
 
-void FlinchedSyncPrompt(int syncNum) {
-    printf(RESET sys);
-    switch(syncNum) {
-        case 1: printf("[SYSTEM]: Player's " HI_RED "[STRIKE] sync is " REG_PURPLE " FLINCHED... it cannot move!"); break;
-        case 2: printf("[SYSTEM]: Player's " HI_BLUE "[TECH] sync is " REG_PURPLE " FLINCHED... it cannot move!"); break;
-        case 3: printf("[SYSTEM]: Player's " REG_YELLOW "[SUPPORT] sync is " REG_PURPLE " FLINCHED... it cannot move!"); break;
-    }
-    Sleep(DELAY);
+void DisplayBattleLog(char log[LOG_LENGTH]) {
+    //printf(RESET sys);
+    printf(RESET "\t\t");
+    printf(log);
+//    Sleep(DELAY);
 }
 
-void StrikeMovePrompt(bool isPlayerMove, int damage) {
-    printf(RESET sys);
-    if(isPlayerMove) printf("[SYSTEM]: Player dealt %d damage to the opponent!", damage);
-    else printf("[SYSTEM]: Enemy dealth %d damage to the player!", damage);
-    Sleep(DELAY);
+void FlinchedSyncLog(char log[LOG_LENGTH], int syncNum) {
+    switch(syncNum) {
+        case 1: sprintf(log, sys "[SYSTEM]: Player's " HI_RED "[STRIKE]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot move!"); break;
+        case 2: sprintf(log, sys "[SYSTEM]: Player's " HI_BLUE "[TECH]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot move!"); break;
+        case 3: sprintf(log, sys "[SYSTEM]: Player's " REG_YELLOW "[SUPPORT]" RESET " sync is" REG_PURPLE " FLINCHED" RESET "... it cannot move!"); break;
+    }
+}
+
+// void StrikeMovePrompt(char log[LOG_LENGTH], bool isPlayerMove, int damage, ) {
+//     if(isPlayerMove) sprintf(log, "[SYSTEM]: Player dealt %d damage to the opponent!", damage);
+//     else sprintf(log, "[SYSTEM]: Enemy dealt %d damage to the player!", damage);
+// }
+
+void PlayerStrikeMoveLog(char log[LOG_LENGTH], int damage) {
+    sprintf(log, RESET sys "[SYSTEM]: Player dealt %d damage to the opponent!", damage);
+    //printf(RESET sys);
+  //  printf(RESET sys);
+   // printf(log);
+   // strcat(log, "\n");
+   // Sleep(LOG_DELAY);
+}
+
+void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int lastSync) {
+    char add[100];
+//    printf("\n\t\t");
+    switch(lastSync) {
+        case 1: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE] sync!", damage); break; 
+        default: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE] sync!", damage); break; 
+    }
+    strcat(log, "\n\t\t");
+    strcat(log, add);
+   // printf(strcat(add, "\n"));
+ //   Sleep(LOG_DELAY);
+}
+
+void DefeatedEnemyLog(char log[LOG_LENGTH]) {
+    // char add[100];
+    // sprintf(add, RESET "[SYSTEM]: Player has defeated the Enemy!");
+    // strcat(log, "\n\t\t");
+    // strcat(log, add);
+    sprintf(log, RESET sys "[SYSTEM]: Player has defeated the Enemy!");
+
+}
+
+void DefeatedSyncLog(char log[LOG_LENGTH], int syncNum) {
+    switch(syncNum) {
+        case 1: sprintf(log, RESET sys "[SYSTEM]: Enemy has defeated Player's " HI_RED "[STRIKE]" RESET "!"); break;
+    }
 }
 
 void SampleBattle(Player p) {
@@ -161,9 +202,7 @@ void DisplayInventory(Player p) {
            HI_BLUE   "\t\t\t\t\t\t\t\t ▓| || | | \\ V /  __/ | | | || (_) | |  | |_| |\n"
                      "\t\t\t\t\t\t\t\t▓|___|_| |_|\\_/ \\___|_| |_|\\__\\___/|_|   \\__, |\n"
                      "\t\t\t\t\t\t\t\t                                         |___/ \n");
-    printf(RESET "\n\t\t\t\t\t\t\t  ═══════════════════════════════════════════════════════════\n");
-    //SampleBattle(p);
-    
+    printf(RESET "\n\t\t\t\t\t\t\t  ═══════════════════════════════════════════════════════════\n");    
     printf("\n\n\n\n\n");
     printf(REG_RED"\t\t     [STRIKE] " RESET "Deals 10-20 damage \t\t\t");
     printf(REG_BLUE "[TECH] " RESET "Has a 20%% chance of \t\t\t     ");
@@ -171,8 +210,7 @@ void DisplayInventory(Player p) {
 
     printf("\t\t\t   to the opponent \t\t\t\tmaking the opponent " HI_PURPLE "FLINCH" RESET "\t\t\t\ton all ally syncs\n\n");
     DisplayAllSyncs(p, &max, true);
-
-    printf(HI_RED "\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n" RESET);
+    printf(HI_RED "\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n\n" RESET);
 }
 
 void DisplayShop(Player p) {
@@ -202,8 +240,7 @@ void DisplayShop(Player p) {
     printf(          "\t\t\t\t\t  ║                                                                ║                         ║\n"
                      "\t\t\t\t\t  ║                                                                ║                         ║\n"
                      "\t\t\t\t\t  ╚════════════════════════════════════════════════════════════════╩═════════════════════════╝" RESET "\n");
-    
-    printf(HI_RED "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n" RESET);
+    printf(HI_RED "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n\n" RESET);
 
 }
 
@@ -220,7 +257,7 @@ void DisplayBlackRoom(Player p) {
     printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n" RESET, p.floor);
     printf("\n\t\t\t\t\t\t\t\t\t     Proceed to Battle?\n");
     printf("\n\t\t\t\t\t\t\t\t\t        " HI_BLUE "[1] Yes\n");
-    printf("\n\t\t\t\t\t\t\t\t\t        " HI_RED  "[2] Go back" RESET);
+    printf("\n\t\t\t\t\t\t\t\t\t        " HI_RED  "[2] Go back\n" RESET);
 
 }
 
@@ -228,9 +265,8 @@ void DisplayBattleUI(Player p, Enemy e) {
     int max = 0;
     printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t\t Floor: %d\n\n" RESET, p.floor);
     PrintEnemy(e);
-    //printForestBunny();
-   // PrintSeparator();
     DisplayAllSyncs(p, &max, true);
+    printf(REG_RED "\n\t\t\t\t\t\t\t\t\t\t[4] End Turn" RESET);
 }
 
 

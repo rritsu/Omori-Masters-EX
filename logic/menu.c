@@ -15,19 +15,22 @@ void ConfigureScreenSettings() {
 }
 
 void InitializePlayer(Player* player) {
-    player->strikeSync.HP = 100;
+    player->strikeSync.HP = 12;
     player->strikeSync.quantity = 1;
     player->strikeSync.isFlinched = false;
+    player->strikeSync.flinchCounter = 0;
 
     player->techSync.HP = 100;
     player->techSync.quantity = 1;
-    player->strikeSync.isFlinched = false;
+    player->techSync.isFlinched = false;
+    player->techSync.flinchCounter = 0;
 
     player->supportSync.HP = 100;
     player->supportSync.quantity = 1;
-    player->strikeSync.isFlinched = false;
+    player->supportSync.isFlinched = false;
+    player->supportSync.flinchCounter = 0;
 
-    player->gems = 1000;
+    player->gems = 0;
     player->floor = 1;
 }
 
@@ -101,13 +104,13 @@ void GoToWhiteRoom(Player* p) {
             RedirectingBackPrompt();
             break;
     }
+    //might have to make a do-while loop later, so that player stays in the room after battle
 }
 
 void MainMenu() {
     bool exitGame = 0;
     Player player;
     InitializePlayer(&player);
-
     do {
         system("cls");
         DisplayMainMenu(false);

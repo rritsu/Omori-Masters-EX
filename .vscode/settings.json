@@ -11,6 +11,7 @@
         "stdbool.h": "c",
         "utility.h": "c",
         "wincon.h": "c",
-        "playervisual.h": "c"
+        "playervisual.h": "c",
+        "struct.h": "c"
     }
 }

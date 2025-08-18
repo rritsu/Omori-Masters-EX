@@ -11,6 +11,7 @@ typedef struct Sync {
     int HP;
     int quantity;
     bool isFlinched;
+    int flinchCounter;
 } Sync;
 
 typedef struct Player {

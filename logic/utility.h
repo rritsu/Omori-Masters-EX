@@ -1,8 +1,9 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-#define sys "\n\n\n\t\t"
+#define sys "\n\n\t\t"
 #define DELAY 750
+#define LOG_DELAY 1200
 
 #include <stdbool.h>
 #include <windows.h>
@@ -10,6 +11,7 @@
 #include <time.h>
 
 #include "../visual/UIVisual.h"
+#include "values.h"
 
 void HideCursor() {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -59,6 +61,22 @@ char GetInput(int numInputs) {
     } while(!validInput);   
     return c;
 }
+
+void SetBufferLog(char log[LOG_LENGTH], const char* msg) {
+    strncpy(log, msg, LOG_LENGTH - 1);
+    log[LOG_LENGTH - 1] = '\0';
+}
+
+
+
+
+// void StrikeMovePrompt(bool isPlayerMove, int damage) {
+//     printf(RESET sys);
+//     if(isPlayerMove) printf("[SYSTEM]: Player dealt %d damage to the opponent!", damage);
+//     else printf("[SYSTEM]: Enemy dealth %d damage to the player!", damage);
+//     Sleep(DELAY);
+// }
+
 
 
 #endif

@@ -14,11 +14,13 @@ int GetEnemyMaxHP(char type) {
 }
 
 void DisplayEnemyHP(int HP, char type) {
-	int h = HP / 5;
+	float h = (float)HP / 5.0f;
+	if(h > 0 && h < 1) h = 1.0f;
 	int e = 20 - h;
 	int maxHP = GetEnemyMaxHP(type);
 	printf("HP: ");
-	for(int i = 0 ; i < h; i++) {
+
+	for(int i = 0 ; i < (int)h; i++) {
 		if(HP > maxHP * 0.65) {
 			printf(HI_GREEN "█" RESET);
 		}
@@ -108,7 +110,7 @@ void PrintForestBunny(Enemy e) {
 		   "\t\t\t\t\t\t\t\t\t          ▓▓▓▓▓▓▓▓▓           \n" RESET);
 	printf("\n\t\t\t\t\t\t\t\t\t ");
 	DisplayEnemyHP(e.HP, e.type);
-	printf(RESET"\t\t\t\t ════════════════════════════════════════╣     Forest Bunny     ╠══════════════════════════════════════════\n\n\n");
+	printf(RESET"\t\t\t\t ════════════════════════════════════════╣     Forest Bunny     ╠══════════════════════════════════════════\n\n");
 }
 
 Sprite SetEnemySprite(char type) {
