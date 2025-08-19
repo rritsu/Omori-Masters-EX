@@ -5,13 +5,14 @@
 #define DELAY 750
 #define LOG_DELAY 1200
 #define LONG_DELAY 1800
+#define LOG_LENGTH 300
 
 #include <stdbool.h>
 #include <windows.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "../visual/UIVisual.h"
+//#include "../visual/UIVisual.h"
 #include "values.h"
 
 void HideCursor() {
@@ -66,6 +67,16 @@ char GetInput(int numInputs) {
 void SetBufferLog(char log[LOG_LENGTH], const char* msg) {
     strncpy(log, msg, LOG_LENGTH - 1);
     log[LOG_LENGTH - 1] = '\0';
+}
+
+int GetEnemyMaxHP(char type) {
+	switch(type) {
+		case 'N': return 100; break;
+		case '1': return 100; break;
+		case '2': return 150; break;
+		case '3': return 200; break;
+	}
+	return 0;
 }
 
 

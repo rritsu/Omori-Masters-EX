@@ -23,13 +23,14 @@ typedef struct Player {
 } Player;
 
 typedef struct Enemy {
-    int HP;
+    Sync sync;
+  //  int HP;
     int dmgRange[2];
     int flinchRate;
     int healRange[2];
     char type;
     int spriteID;
-    bool isFlinched;
+//    bool isFlinched;
 } Enemy;
 
 

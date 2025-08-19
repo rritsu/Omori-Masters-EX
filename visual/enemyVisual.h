@@ -2,16 +2,17 @@
 #define ENEMY_VISUAL_H
 
 #include "colors.h"
+#include "../logic./utility.h"
 
-int GetEnemyMaxHP(char type) {
-	switch(type) {
-		case 'N': return 100; break;
-		case '1': return 100; break;
-		case '2': return 150; break;
-		case '3': return 200; break;
-	}
-	return 0;
-}
+// int GetEnemyMaxHP(char type) {
+// 	switch(type) {
+// 		case 'N': return 100; break;
+// 		case '1': return 100; break;
+// 		case '2': return 150; break;
+// 		case '3': return 200; break;
+// 	}
+// 	return 0;
+// }
 
 void DisplayEnemyHP(int HP, char type) {
 	float h = (float)HP / 5.0f;
@@ -24,7 +25,9 @@ void DisplayEnemyHP(int HP, char type) {
 	printf("HP: ");
 
 	for(int i = 0 ; i < (int)h; i++) {
+		// printf("[DEBUG] Raw HP = %d\n", HP);
 		if(HP > maxHP * 0.65) {
+			
 			printf(HI_GREEN "█" RESET);
 		}
 		else if(HP > maxHP * 0.30) {
@@ -91,7 +94,9 @@ void PrintBasilaaa() {
 	printf(RESET);
 }
 
-void PrintForestBunny(Enemy e) {
+
+//18 lines
+void PrintForestBunny_(Enemy e) {
 	printf(HI_YELLOW);
 	printf("\t\t\t\t\t\t\t\t\t      ▒▒▓         ▒▒▓         \n"
 		   "\t\t\t\t\t\t\t\t\t     ▒░░░▓      ▓░░░░▓        \n"
@@ -112,9 +117,45 @@ void PrintForestBunny(Enemy e) {
 		   "\t\t\t\t\t\t\t\t\t      ▓▒▒░░░░░░░░░░░░░░▒      \n"
 		   "\t\t\t\t\t\t\t\t\t          ▓▓▓▓▓▓▓▓▓           \n" RESET);
 	printf("\n\t\t\t\t\t\t\t\t\t ");
-	DisplayEnemyHP(e.HP, e.type);
+	DisplayEnemyHP(e.sync.HP, e.type);
 	printf(RESET"\t\t\t\t ════════════════════════════════════════╣     Forest Bunny     ╠══════════════════════════════════════════\n\n");
 }
+
+void PrintForestBunny(Enemy e) {
+	printf(HI_YELLOW);
+	printf(	"\t\t\t\t\t\t\t\t\t      ▒▒▓         ▒▒▓         \n"
+		   	"\t\t\t\t\t\t\t\t\t     ▒░░░▓      ▓░░░░▓        \n"
+			"\t\t\t\t\t\t\t\t\t    ▓▒░▒▒░▓     ▒▒▒▓░▓▓       \n"
+			"\t\t\t\t\t\t\t\t\t    ▒▒▒▓▓░▓     ▒▒▓▓░▓▓       \n"
+			"\t\t\t\t\t\t\t\t\t    ▓▒▒▓▓▒░▓    ░░▓▓░▓▓       \n"
+			"\t\t\t\t\t\t\t\t\t     ▒░▓▓▒░█    ▒▒▒▓░▓        \n"
+			"\t\t\t\t\t\t\t\t\t     ▓▒▒▓▓░▒░░░░░░▒▒░▓        \n"
+			"\t\t\t\t\t\t\t\t\t      ▓░░░░░░░░░░░░░░▒▓       \n"
+			"\t\t\t\t\t\t\t\t\t    ▓▒░░░░░░░░░░░░░░░░░▒▓     \n"
+			"\t\t\t\t\t\t\t\t\t   █▒░░░░▒▒░░░░▒░░░░▒░░░░▓    \n"
+			"\t\t\t\t\t\t\t\t\t  ▓▒░░░░░░░░░░░░░░░░░░░░░░▒▓  \n"
+			"\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
+			"\t\t\t\t\t\t\t\t\t ▓▒░░▒░░░░░░░░░░░░░░░░░▒░░░▒▓ \n");
+
+	if(!e.sync.isFlinched) {
+		printf("\t\t\t\t\t\t\t\t\t ▓▒░░░░░░░░░░░░░░░░░░░░░░░░▒▓ \n"
+		       "\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
+			   "\t\t\t\t\t\t\t\t\t   ▓▓▒░░░░░░░░░░░░░░░░░░░▒▓   \n");
+	}
+	else {
+		printf("\t\t\t\t\t\t\t\t\t" HI_PURPLE "═════════════════════════════" RESET "\n");
+		printf(HI_YELLOW "\t\t\t\t\t\t\t\t\t" BOLD_WHITE "         Flinched: %d         " RESET "\n", e.sync.flinchCounter);
+		printf(HI_YELLOW"\t\t\t\t\t\t\t\t\t" HI_PURPLE "═════════════════════════════" RESET "\n");
+	}
+
+	printf(HI_YELLOW "\t\t\t\t\t\t\t\t\t      ▓▒▒░░░░░░░░░░░░░░▒      \n"
+	       "\t\t\t\t\t\t\t\t\t          ▓▓▓▓▓▓▓▓▓           \n"  RESET);
+	printf("\n\t\t\t\t\t\t\t\t\t " RESET);
+	DisplayEnemyHP(e.sync.HP, e.type);
+	printf(RESET"\t\t\t\t ════════════════════════════════════════╣     Forest Bunny     ╠══════════════════════════════════════════\n\n");
+}
+
+
 
 Sprite SetEnemySprite(char type) {
 	Sprite sprite;
@@ -136,12 +177,13 @@ Sprite SetEnemySprite(char type) {
 // }
 
 void PrintEnemy(Enemy e) {
-	switch(e.spriteID) {
-		case 1: PrintForestBunny(e); break;
-		case 2: PrintForestBunny(e); break;
-		case 20: break;
-		default: PrintForestBunny(e); break;
-	}
+	// switch(e.spriteID) {
+	// 	case 1: PrintForestBunny(e); break;
+	// 	case 2: PrintForestBunny(e); break;
+	// 	case 20: break;
+	// 	default: PrintForestBunny(e); break;
+	// }
+	PrintForestBunny(e);
 }
 
 #endif

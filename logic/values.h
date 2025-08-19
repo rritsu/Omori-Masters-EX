@@ -11,7 +11,7 @@
 #define TECH_COST 100
 #define SUPPORT_COST 100
 
-#define LOG_LENGTH 200
+#define LOG_LENGTH 300
 
 // #define DMG_MIN 10
 // #define DMG_MAX 20
