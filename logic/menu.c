@@ -1,20 +1,14 @@
-#include <conio.h>
-#include <windows.h>
-#include <stdio.h>
-#include <stdbool.h>
-
-#include "struct.h"
+#include "menu.h"
 #include "utility.h"
-#include "battle.c"
+#include "battle.h"
 #include "values.h"
 
 void ConfigureScreenSettings() {
     BorderCheck();
-    char c = _getch();
+    _getch();
    // Sleep(500);
+
 }
-
-
 
 void GoToInventory(Player p) {
     system("cls");

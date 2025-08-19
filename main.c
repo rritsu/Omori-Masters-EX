@@ -1,4 +1,4 @@
-#include "logic/menu.c"
+#include "logic/menu.h"
 #include "logic/utility.h"
 
 //#include "visual/enemyVisual.h"
@@ -13,6 +13,5 @@ int main() {
     InitializeRNG();
     MainMenu();
   
-
     return 0;
 }
