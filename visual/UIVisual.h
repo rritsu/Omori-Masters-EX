@@ -27,12 +27,17 @@ void SyncIsDownLog(char log[LOG_LENGTH], int syncNum);
 void FlinchedEnemyLog(char log[LOG_LENGTH]);
 void EnemyAlreadyFlinchedLog(char log[LOG_LENGTH]);
 void ResetFlinchCounterLog(char log[LOG_LENGTH], int syncNum);
+
 void PlayerStrikeMoveLog(char log[LOG_LENGTH], int damage);
 void PlayerTechAttemptLog(char log[LOG_LENGTH]);
 void PlayerTechMoveLog(char log[LOG_LENGTH], bool success);
+void PlayerSupportMoveLog(char log[LOG_LENGTH], int heal, bool success);
+
 void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int syncNum);
 void EnemyTechAttemptLog(char log[LOG_LENGTH], int syncNum);
 void EnemyTechMoveLog(char log[LOG_LENGTH], int syncNum, bool success);
+void EnemySupportMoveLog(char log[LOG_LENGTH], int heal);
+
 void DefeatedEnemyLog(char log[LOG_LENGTH]);
 void PlayerWinsLog(char log[LOG_LENGTH]);
 void PlayerLossesLog(char log[LOG_LENGTH]);

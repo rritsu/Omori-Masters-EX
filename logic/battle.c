@@ -5,18 +5,18 @@
 #include "../visual/UIVisual.h"
 
 void InitializePlayer(Player* player) {
-    player->strikeSync.HP = 100;
-    player->strikeSync.quantity = 1;
+    player->strikeSync.HP = 3;
+    player->strikeSync.quantity = 2;
     player->strikeSync.isFlinched = false;
     player->strikeSync.flinchCounter = 0;
 
-    player->techSync.HP = 100;
-    player->techSync.quantity = 1;
+    player->techSync.HP = 10;
+    player->techSync.quantity = 2;
     player->techSync.isFlinched = false;
     player->techSync.flinchCounter = 0;
 
-    player->supportSync.HP = 100;
-    player->supportSync.quantity = 1;
+    player->supportSync.HP = 3;
+    player->supportSync.quantity = 2;
     player->supportSync.isFlinched = false;
     player->supportSync.flinchCounter = 0;
 
@@ -105,6 +105,15 @@ char PrepareEnemyType(int floor) {
 //     }
 // }
 
+bool IsBattleOver(Player p, Enemy e) {
+    bool isOver = false;
+    if(p.strikeSync.quantity <= 0 || e.sync.HP <= 0) {
+        isOver = true;
+    }
+    return isOver;
+}
+
+
 void HandleSyncQuantity(Sync* sync, Player* p, Enemy e, int syncNum, char log[LOG_LENGTH]) {
     int leftover = sync->quantity -= 1;
     DefeatedSyncLog(log, syncNum);
@@ -112,10 +121,10 @@ void HandleSyncQuantity(Sync* sync, Player* p, Enemy e, int syncNum, char log[LO
     Sleep(LOG_DELAY);
 
     if(leftover <= 0) {
-        NoSyncsLog(log, 1);
+        NoSyncsLog(log, syncNum);
     }
     else {
-        p->strikeSync.HP = 100; //revive and make HP full
+        sync->HP = 100; //revive and make HP full
         RevivedSyncLog(log, syncNum);
     }
     UpdateScreenWithLog(*p, e, log, false);
@@ -136,11 +145,12 @@ void CheckPlayerSyncQuantity(Player* p, Enemy e, int syncNum, char log[LOG_LENGT
 }
 
 void PlayerStrikeMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync) {
+    *lastSync = 1;
     if(p.strikeSync.HP > 0) {
         if(!p.strikeSync.isFlinched) {
             int damage = GenerateRandomNum(10, 20);
             e->sync.HP -= damage;
-            *lastSync = 1;
+            //*lastSync = 1;
             PlayerStrikeMoveLog(log, damage);
             UpdateScreenWithLog(p, *e, log, false);        
             Sleep(LONG_DELAY);
@@ -160,6 +170,7 @@ void PlayerStrikeMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync) {
 
 
 void PlayerTechMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync) {
+    *lastSync = 2;
     if(p.techSync.HP > 0) {
         if(!p.techSync.isFlinched) {
             if(!e->sync.isFlinched) {
@@ -175,7 +186,7 @@ void PlayerTechMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync) {
                 else {
                     PlayerTechMoveLog(log, false);
                 }
-                *lastSync = 2;
+                //*lastSync = 2;
                 UpdateScreenWithLog(p, *e, log, false);
                 Sleep(LONG_DELAY);
             }
@@ -196,24 +207,57 @@ void PlayerTechMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync) {
     }
 }
 
+void SyncHeal(Sync* sync, int heal) {
+    sync->HP += heal;
+    if(sync->HP > 100)
+        sync->HP = 100;
+}
+
+void PlayerSupportMove(Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSync) {
+    *lastSync = 3;
+    if(p->supportSync.HP > 0) {
+        if(!p->supportSync.isFlinched) {
+            int heal = GenerateRandomNum(8, 15);
+
+            if(p->strikeSync.HP >= 100 && p->techSync.HP >= 100 && p->supportSync.HP >= 100 ) {
+                PlayerSupportMoveLog(log, heal, false);
+            }
+            else {
+                SyncHeal(&p->strikeSync, heal);
+                SyncHeal(&p->techSync, heal);
+                SyncHeal(&p->supportSync, heal);
+                PlayerSupportMoveLog(log, heal, true);
+            }
+            //*lastSync = 3;
+            UpdateScreenWithLog(*p, *e, log, false);        
+            Sleep(LONG_DELAY);
+        }
+        else {
+            FlinchedSyncLog(log, 3);
+            UpdateScreenWithLog(*p, *e, log, true);
+        }
+    }
+    else {
+        SyncIsDownLog(log, 3);
+        UpdateScreenWithLog(*p, *e, log, true);
+    }
+}
+
 void EnemyStrikeMove(Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]) {
     int damage = GenerateRandomNum(e->dmgRange[0], e->dmgRange[1]);
     switch(lastSync) {
-        case 1:
-            p->strikeSync.HP -= damage;
-            break;
-        case 2:
-            p->techSync.HP -= damage;
-            break;
-        case 3:
-            p->supportSync.HP -= damage;
-            break;
+        case 1: p->strikeSync.HP -= damage; break;
+        case 2: p->techSync.HP -= damage; break;
+        case 3: p->supportSync.HP -= damage; break;
     }
 
     EnemyStrikeMoveLog(log, damage, lastSync);
-    UpdateScreenWithLog(*p, *e, log, true);            
-    //Sleep(LONG_DELAY);   
+    UpdateScreenWithLog(*p, *e, log, false);            
+    Sleep(LONG_DELAY);   
     CheckPlayerSyncQuantity(p, *e, lastSync, log);
+    if(!IsBattleOver(*p, *e)) {
+        UpdateScreenWithLog(*p, *e, log, true);
+    }
 }
 
 void EnemyTechMove(Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]) {
@@ -249,11 +293,18 @@ void EnemyTechMove(Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]) {
     
 }
 
+void EnemySupportMove(Enemy* e, Player* p, char log[LOG_LENGTH]) {
+    int heal = GenerateRandomNum(e->healRange[0], e->healRange[1]);
+    SyncHeal(&e->sync, heal);
+    EnemySupportMoveLog(log, heal);
+    UpdateScreenWithLog(*p, *e, log, true);   
+}
+
 int EnemyMoveDecision(Player* p, Enemy* e, int lastSync) {
     int move = 1;
     bool valid = false;
     while(!valid) {
-        move = GenerateRandomNum(1, 2);
+        move = GenerateRandomNum(1, 3);
         if(move == 2) {
             switch(lastSync) {
                 case 1: if(!p->strikeSync.isFlinched) valid = true; break; 
@@ -269,7 +320,7 @@ int EnemyMoveDecision(Player* p, Enemy* e, int lastSync) {
             valid = true;
         }
     }
-    printf("     move: %d", move);
+   // printf("     move: %d", move);
     return move;
 }
 
@@ -280,6 +331,7 @@ void EnemyMove(Enemy* e, Player* p, char log[LOG_LENGTH], int lastSync) {
         switch(enemyMove) {
             case 1: EnemyStrikeMove(e, p, lastSync, log); break;
             case 2: EnemyTechMove(e, p, lastSync, log); break;
+            case 3: EnemySupportMove(e, p, log);
         }
     }
     else {
@@ -361,13 +413,6 @@ void UpdateEnemyFlinchCounter(Player* p, Enemy* e, char log[LOG_LENGTH]) {
     };
 }
 
-bool IsBattleOver(Player p, Enemy e) {
-    bool isOver = false;
-    if(p.strikeSync.quantity <= 0 || e.sync.HP <= 0) {
-        isOver = true;
-    }
-    return isOver;
-}
 
 void CheckPlayerStatus(Player* p) {
     if(p->strikeSync.quantity <= 0) {
@@ -398,6 +443,7 @@ void BattleLoop(Player* player) {
              //   lastSync = 2;
                 break;
             case '3':
+                PlayerSupportMove(player, &enemy, log, &lastSync);
                 break;
         }
 
@@ -433,7 +479,7 @@ void BattleLoop(Player* player) {
         UpdateScreenWithLog(*player, enemy, log, false);   
     }
     
-    Sleep(LOG_DELAY);
+   // Sleep(LOG_DELAY);
     c = _getch(); //continue/confirm prompt
     UpdateScreen(*player, enemy, false);
     ReturnToRoomNotice();

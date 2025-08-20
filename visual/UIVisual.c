@@ -181,7 +181,7 @@ void ResetFlinchCounterLog(char log[LOG_LENGTH], int syncNum) {
 // }
 
 void PlayerStrikeMoveLog(char log[LOG_LENGTH], int damage) {
-    sprintf(log, RESET sys "[SYSTEM]: Player dealt %d damage to the opponent!", damage);
+    sprintf(log, RESET sys "[SYSTEM]: Player dealt " REG_RED "%d damage" RESET " to the opponent!", damage);
     //printf(RESET sys);
   //  printf(RESET sys);
    // printf(log);
@@ -201,13 +201,18 @@ void PlayerTechMoveLog(char log[LOG_LENGTH], bool success) {
     strcat(log, add);
 }
 
+void PlayerSupportMoveLog(char log[LOG_LENGTH], int heal, bool success) {
+    if(success) sprintf(log, RESET sys "[SYSTEM]: Player has healed all of their syncs! All allies recovered " REG_GREEN "%d HP." RESET, heal);
+    else sprintf(log, RESET sys "[SYSTEM]: All allies are at full HP... nothing happened.");
+}
+
 void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int syncNum) {
     char add[100];
     switch(syncNum) {
-        case 1: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE]" RESET " sync!", damage); break; 
-        case 2: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_BLUE "[TECH]" RESET " sync!", damage); break;
-        case 3: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " REG_YELLOW "[SUPPORT]" RESET "sync!", damage); break;
-        default: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE]" RESET " sync!", damage); break; 
+        case 1: sprintf(add, "[SYSTEM]: Enemy dealt " REG_RED "%d damage" RESET " to the player's " HI_RED "[STRIKE]" RESET " sync!", damage); break; 
+        case 2: sprintf(add, "[SYSTEM]: Enemy dealt " REG_RED "%d damage" RESET " to the player's " HI_BLUE "[TECH]" RESET " sync!", damage); break;
+        case 3: sprintf(add, "[SYSTEM]: Enemy dealt " REG_RED "%d damage" RESET " to the player's " REG_YELLOW "[SUPPORT]" RESET " sync!", damage); break;
+        default: sprintf(add, "[SYSTEM]: Enemy dealt " REG_RED "%d damage" RESET " to the player's " HI_RED "[STRIKE]" RESET " sync!", damage); break; 
     }
     strcat(log, "\n\t\t");
     strcat(log, add);
@@ -218,9 +223,9 @@ void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int syncNum) {
 void EnemyTechAttemptLog(char log[LOG_LENGTH], int syncNum) {
     char add[100];
     switch(syncNum) {
-        case 1: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_RED "[STRIKE]" RESET "..."); break; 
-        case 2: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_BLUE "[TECH]" RESET "..."); break;
-        case 3: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " REG_YELLOW "[SUPPORT]" RESET "..."); break;
+        case 1: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_RED "[STRIKE]" RESET " sync..."); break; 
+        case 2: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_BLUE "[TECH]" RESET " sync..."); break;
+        case 3: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " REG_YELLOW "[SUPPORT]" RESET " sync..."); break;
     }
     strcat(log, "\n\t\t");
     strcat(log, add);
@@ -238,6 +243,13 @@ void EnemyTechMoveLog(char log[LOG_LENGTH], int syncNum, bool success) {
     else {
         sprintf(add, "[SYSTEM]: It failed! Nothing happened...");
     }
+    strcat(log, "\n\t\t");
+    strcat(log, add);
+}
+
+void EnemySupportMoveLog(char log[LOG_LENGTH], int heal) {
+    char add[100];
+    sprintf(add, "[SYSTEM]: Enemy healed themselves! They regained " REG_GREEN "%d HP" RESET "!", heal);
     strcat(log, "\n\t\t");
     strcat(log, add);
 }
@@ -272,6 +284,8 @@ void PlayerLossesLog(char log[LOG_LENGTH]) {
 void DefeatedSyncLog(char log[LOG_LENGTH], int syncNum) {
     switch(syncNum) {
         case 1: sprintf(log, RESET sys "[SYSTEM]: Enemy has defeated Player's " HI_RED "[STRIKE]" RESET "!"); break;
+        case 2: sprintf(log, RESET sys "[SYSTEM]: Enemy has defeated Player's " HI_BLUE "[TECH]" RESET "!"); break;
+        case 3: sprintf(log, RESET sys "[SYSTEM]: Enemy has defeated Player's " REG_YELLOW "[SUPPORT]" RESET "!"); break;
     }
 }
 
