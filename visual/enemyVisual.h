@@ -7,9 +7,9 @@
 void DisplayEnemyHP(int HP, char type);
 void PrintBasil();
 void PrintBasilaaa();
-void PrintForestBunny_(Enemy e);
-void PrintForestBunny(Enemy e);
-void PrintEnemy(Enemy e);
+//void PrintForestBunny_(Enemy* e);
+void PrintForestBunny(const Enemy* e);
+void PrintEnemy(const Enemy* e);
 
 #endif
 

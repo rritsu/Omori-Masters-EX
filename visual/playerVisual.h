@@ -13,7 +13,7 @@ void DisplayTechSync(Sync sync, char tech[20][150], bool displayInfo);
 void DisplayTechSyncGray(Sync sync, char tech[20][150], bool displayInfo);
 void DisplaySupportSync(Sync sync, char support[20][150], bool displayInfo);
 void DisplaySupportSyncGray(Sync sync, char support[20][150], bool displayInfo);
-void DisplayAllSyncs(Player p, int* max, bool displayInfo, bool isPlayerTurn);
+void DisplayAllSyncs(const Player* p, int* max, bool displayInfo, bool isPlayerTurn);
 void DisplayOmori();
 
 #endif

@@ -298,35 +298,21 @@ void DisplaySupportSyncGray(Sync sync, char support[20][150], bool displayInfo) 
 
 
 
-void DisplayAllSyncs(Player p, int* max, bool displayInfo, bool isPlayerTurn) {
+void DisplayAllSyncs(const Player* p, int* max, bool displayInfo, bool isPlayerTurn) {
    // char syncPairs[20][1000];
     char strike[20][150];
     char tech[20][150];
     char support[20][150];
     char padding[21] = "                    ";
 
-    if(isPlayerTurn) DisplayStrikeSync(p.strikeSync, strike, displayInfo, max);
-    else DisplayStrikeSyncGray(p.strikeSync, strike, displayInfo, max);
+    if(isPlayerTurn) DisplayStrikeSync(p->strikeSync, strike, displayInfo, max);
+    else DisplayStrikeSyncGray(p->strikeSync, strike, displayInfo, max);
     
-    if(isPlayerTurn) DisplayTechSync(p.techSync, tech, displayInfo);
-    else DisplayTechSyncGray(p.techSync, tech, displayInfo);
+    if(isPlayerTurn) DisplayTechSync(p->techSync, tech, displayInfo);
+    else DisplayTechSyncGray(p->techSync, tech, displayInfo);
 
-    if(isPlayerTurn) DisplaySupportSync(p.supportSync, support, displayInfo);
-    else DisplaySupportSyncGray(p.supportSync, support, displayInfo);
-
-    
-
-    // for(int i = 0; i < *max; i++) {
-    //     char temp[700];
-    //     strcpy(temp, strike[i]);
-    //     strcat(temp, padding);
-    //     strcat(temp, tech[i]);
-    //     strcat(temp, padding);
-    //     strcat(temp, support[i]);
-
-    //     strcpy(syncPairs[i], temp);
-    //     printf(syncPairs[i]);
-    // }
+    if(isPlayerTurn) DisplaySupportSync(p->supportSync, support, displayInfo);
+    else DisplaySupportSyncGray(p->supportSync, support, displayInfo);
 
     for(int i = 0; i < *max; i++) {
         printf("\t\t   ");

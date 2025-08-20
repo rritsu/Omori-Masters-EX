@@ -11,7 +11,7 @@
 
 void ConfigureScreenSettings();
 
-void GoToInventory(Player p);
+void GoToInventory(const Player* p);
 
 void GoToShop(Player* p);
 

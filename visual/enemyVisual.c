@@ -84,32 +84,32 @@ void PrintBasilaaa() {
 
 
 //18 lines
-void PrintForestBunny_(Enemy e) {
-	printf(HI_YELLOW);
-	printf("\t\t\t\t\t\t\t\t\t      ▒▒▓         ▒▒▓         \n"
-		   "\t\t\t\t\t\t\t\t\t     ▒░░░▓      ▓░░░░▓        \n"
-		   "\t\t\t\t\t\t\t\t\t    ▓▒░▒▒░▓     ▒▒▒▓░▓▓       \n"
-		   "\t\t\t\t\t\t\t\t\t    ▒▒▒▓▓░▓     ▒▒▓▓░▓▓       \n"
-		   "\t\t\t\t\t\t\t\t\t    ▓▒▒▓▓▒░▓    ░░▓▓░▓▓       \n"
-		   "\t\t\t\t\t\t\t\t\t     ▒░▓▓▒░█    ▒▒▒▓░▓        \n"
-		   "\t\t\t\t\t\t\t\t\t     ▓▒▒▓▓░▒░░░░░░▒▒░▓        \n"
-		   "\t\t\t\t\t\t\t\t\t      ▓░░░░░░░░░░░░░░▒▓       \n"
-		   "\t\t\t\t\t\t\t\t\t    ▓▒░░░░░░░░░░░░░░░░░▒▓     \n"
-		   "\t\t\t\t\t\t\t\t\t   █▒░░░░▒▒░░░░▒░░░░▒░░░░▓    \n"
-		   "\t\t\t\t\t\t\t\t\t  ▓▒░░░░░░░░░░░░░░░░░░░░░░▒▓  \n"
-		   "\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
-		   "\t\t\t\t\t\t\t\t\t ▓▒░░▒░░░░░░░░░░░░░░░░░▒░░░▒▓ \n"
-		   "\t\t\t\t\t\t\t\t\t ▓▒░░░░░░░░░░░░░░░░░░░░░░░░▒▓ \n"
-		   "\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
-		   "\t\t\t\t\t\t\t\t\t   ▓▓▒░░░░░░░░░░░░░░░░░░░▒▓   \n"
-		   "\t\t\t\t\t\t\t\t\t      ▓▒▒░░░░░░░░░░░░░░▒      \n"
-		   "\t\t\t\t\t\t\t\t\t          ▓▓▓▓▓▓▓▓▓           \n" RESET);
-	printf("\n\t\t\t\t\t\t\t\t\t ");
-	DisplayEnemyHP(e.sync.HP, e.type);
-	printf(RESET"\t\t\t\t ════════════════════════════════════════╣     Forest Bunny     ╠══════════════════════════════════════════\n\n");
-}
+// void PrintForestBunny_(Enemy e) {
+// 	printf(HI_YELLOW);
+// 	printf("\t\t\t\t\t\t\t\t\t      ▒▒▓         ▒▒▓         \n"
+// 		   "\t\t\t\t\t\t\t\t\t     ▒░░░▓      ▓░░░░▓        \n"
+// 		   "\t\t\t\t\t\t\t\t\t    ▓▒░▒▒░▓     ▒▒▒▓░▓▓       \n"
+// 		   "\t\t\t\t\t\t\t\t\t    ▒▒▒▓▓░▓     ▒▒▓▓░▓▓       \n"
+// 		   "\t\t\t\t\t\t\t\t\t    ▓▒▒▓▓▒░▓    ░░▓▓░▓▓       \n"
+// 		   "\t\t\t\t\t\t\t\t\t     ▒░▓▓▒░█    ▒▒▒▓░▓        \n"
+// 		   "\t\t\t\t\t\t\t\t\t     ▓▒▒▓▓░▒░░░░░░▒▒░▓        \n"
+// 		   "\t\t\t\t\t\t\t\t\t      ▓░░░░░░░░░░░░░░▒▓       \n"
+// 		   "\t\t\t\t\t\t\t\t\t    ▓▒░░░░░░░░░░░░░░░░░▒▓     \n"
+// 		   "\t\t\t\t\t\t\t\t\t   █▒░░░░▒▒░░░░▒░░░░▒░░░░▓    \n"
+// 		   "\t\t\t\t\t\t\t\t\t  ▓▒░░░░░░░░░░░░░░░░░░░░░░▒▓  \n"
+// 		   "\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
+// 		   "\t\t\t\t\t\t\t\t\t ▓▒░░▒░░░░░░░░░░░░░░░░░▒░░░▒▓ \n"
+// 		   "\t\t\t\t\t\t\t\t\t ▓▒░░░░░░░░░░░░░░░░░░░░░░░░▒▓ \n"
+// 		   "\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
+// 		   "\t\t\t\t\t\t\t\t\t   ▓▓▒░░░░░░░░░░░░░░░░░░░▒▓   \n"
+// 		   "\t\t\t\t\t\t\t\t\t      ▓▒▒░░░░░░░░░░░░░░▒      \n"
+// 		   "\t\t\t\t\t\t\t\t\t          ▓▓▓▓▓▓▓▓▓           \n" RESET);
+// 	printf("\n\t\t\t\t\t\t\t\t\t ");
+// 	DisplayEnemyHP(e.sync.HP, e.type);
+// 	printf(RESET"\t\t\t\t ════════════════════════════════════════╣     Forest Bunny     ╠══════════════════════════════════════════\n\n");
+// }
 
-void PrintForestBunny(Enemy e) {
+void PrintForestBunny(const Enemy* e) {
 	printf(HI_YELLOW);
 	printf(	"\t\t\t\t\t\t\t\t\t      ▒▒▓         ▒▒▓         \n"
 		   	"\t\t\t\t\t\t\t\t\t     ▒░░░▓      ▓░░░░▓        \n"
@@ -125,25 +125,25 @@ void PrintForestBunny(Enemy e) {
 			"\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
 			"\t\t\t\t\t\t\t\t\t ▓▒░░▒░░░░░░░░░░░░░░░░░▒░░░▒▓ \n");
 
-	if(!e.sync.isFlinched) {
+	if(!e->sync.isFlinched) {
 		printf("\t\t\t\t\t\t\t\t\t ▓▒░░░░░░░░░░░░░░░░░░░░░░░░▒▓ \n"
 		       "\t\t\t\t\t\t\t\t\t ▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒  \n"
 			   "\t\t\t\t\t\t\t\t\t   ▓▓▒░░░░░░░░░░░░░░░░░░░▒▓   \n");
 	}
 	else {
 		printf("\t\t\t\t\t\t\t\t\t" HI_PURPLE "═════════════════════════════" RESET "\n");
-		printf(HI_YELLOW "\t\t\t\t\t\t\t\t\t" BOLD_WHITE "         Flinched: %d         " RESET "\n", e.sync.flinchCounter);
+		printf(HI_YELLOW "\t\t\t\t\t\t\t\t\t" BOLD_WHITE "         Flinched: %d         " RESET "\n", e->sync.flinchCounter);
 		printf(HI_YELLOW"\t\t\t\t\t\t\t\t\t" HI_PURPLE "═════════════════════════════" RESET "\n");
 	}
 
 	printf(HI_YELLOW "\t\t\t\t\t\t\t\t\t      ▓▒▒░░░░░░░░░░░░░░▒      \n"
 	       "\t\t\t\t\t\t\t\t\t          ▓▓▓▓▓▓▓▓▓           \n"  RESET);
 	printf("\n\t\t\t\t\t\t\t\t\t " RESET);
-	DisplayEnemyHP(e.sync.HP, e.type);
+	DisplayEnemyHP(e->sync.HP, e->type);
 	printf(RESET"\t\t\t\t ════════════════════════════════════════╣     Forest Bunny     ╠══════════════════════════════════════════\n\n");
 }
 
-void PrintEnemy(Enemy e) {
+void PrintEnemy(const Enemy* e) {
 	// switch(e.spriteID) {
 	// 	case 1: PrintForestBunny(e); break;
 	// 	case 2: PrintForestBunny(e); break;

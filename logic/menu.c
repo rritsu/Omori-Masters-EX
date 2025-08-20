@@ -10,7 +10,7 @@ void ConfigureScreenSettings() {
 
 }
 
-void GoToInventory(Player p) {
+void GoToInventory(const Player* p) {
     system("cls");
     DisplayInventory(p);
     char c = GetInput(1);
@@ -22,7 +22,7 @@ void GoToShop(Player* p) {
     char c;
     do {
         system("cls");
-        DisplayShop(*p);
+        DisplayShop(p);
         c = GetInput(4);
         switch(c) {
             case '1':
@@ -72,7 +72,7 @@ void GoToWhiteRoom(Player* p) {
     do {
         CheckPlayerStatus(p);
         system("cls");
-        DisplayBlackRoom(*p);
+        DisplayBlackRoom(p);
         c = GetInput(3);
 
         switch(c) {
@@ -82,7 +82,7 @@ void GoToWhiteRoom(Player* p) {
             break;
         case '2':
             RedirectingNotice(c);
-            GoToInventory(*p);
+            GoToInventory(p);
             break;
         case '3':
             RedirectingBackNotice();
@@ -106,7 +106,7 @@ void MainMenu() {
                 break;
             case '2':
                 RedirectingNotice(c);
-                GoToInventory(player);
+                GoToInventory(&player);
                 break;
             case '3':
                 RedirectingNotice(c);

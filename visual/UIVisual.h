@@ -45,10 +45,10 @@ void DefeatedSyncLog(char log[LOG_LENGTH], int syncNum);
 void RevivedSyncLog(char log[LOG_LENGTH], int syncNum);
 void NoSyncsLog(char log[LOG_LENGTH], int syncNum);
 
-void DisplayInventory(Player p);
-void DisplayShop(Player p);
-void DisplayBlackRoom(Player p);
-void DisplayBattleUI(Player p, Enemy e, bool isPlayerTurn);
+void DisplayInventory(const Player* p);
+void DisplayShop(const Player* p);
+void DisplayBlackRoom(const Player* p);
+void DisplayBattleUI(const Player* p, const Enemy* e, bool isPlayerTurn);
 
 #endif 
 

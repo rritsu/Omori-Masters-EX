@@ -202,7 +202,7 @@ void PlayerTechMoveLog(char log[LOG_LENGTH], bool success) {
 }
 
 void PlayerSupportMoveLog(char log[LOG_LENGTH], int heal, bool success) {
-    if(success) sprintf(log, RESET sys "[SYSTEM]: Player has healed all of their syncs! All allies recovered " REG_GREEN "%d HP." RESET, heal);
+    if(success) sprintf(log, RESET sys "[SYSTEM]: Player has healed all of their syncs! All allies recovered " REG_GREEN "%d HP" RESET "!", heal);
     else sprintf(log, RESET sys "[SYSTEM]: All allies are at full HP... nothing happened.");
 }
 
@@ -324,7 +324,7 @@ void NoSyncsLog(char log[LOG_LENGTH], int syncNum) {
 //    // DisplayStrikePair(p);
 // }
 
-void DisplayInventory(Player p) {
+void DisplayInventory(const Player* p) {
     int max = 0;
 
     printf("\n\n\n\n");
@@ -345,7 +345,7 @@ void DisplayInventory(Player p) {
     printf(HI_RED "\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n\n" RESET);
 }
 
-void DisplayShop(Player p) {
+void DisplayShop(const Player* p) {
     printf("\n\n\n\n");
     printf(HI_CYAN "\t\t\t\t\t\t\t\t\t    _____  _                 \n"
                    "\t\t\t\t\t\t\t\t\t  ▓|  ___|| |                \n"
@@ -362,13 +362,13 @@ void DisplayShop(Player p) {
                      "\t\t\t\t\t  ║                                                                ║                         ║\n"
                      "\t\t\t\t\t  ║────────────────────────────────────────────────────────────────╬─────────────────────────║\n"
                      "\t\t\t\t\t  ║                                                                ║                         ║\n"
-                     "\t\t\t\t\t  ║                                              " RESET " Cost " HI_YELLOW "            ║    " RESET "Current Gems: " HI_GREEN "%-5d  " HI_YELLOW "║\n", p.gems); 
+                     "\t\t\t\t\t  ║                                              " RESET " Cost " HI_YELLOW "            ║    " RESET "Current Gems: " HI_GREEN "%-5d  " HI_YELLOW "║\n", p->gems); 
     printf(          "\t\t\t\t\t  ║                                                                ║                         ║\n"
-                     "\t\t\t\t\t  ║       " HI_CYAN " [1] " RESET "Buy " HI_RED "[STRIKE]                     " HI_GREEN "200 Gems           " HI_YELLOW "║     " HI_RED " [STRIKE]  " RESET "%2dx      " HI_YELLOW "║\n", p.strikeSync.quantity);
+                     "\t\t\t\t\t  ║       " HI_CYAN " [1] " RESET "Buy " HI_RED "[STRIKE]                     " HI_GREEN "200 Gems           " HI_YELLOW "║     " HI_RED " [STRIKE]  " RESET "%2dx      " HI_YELLOW "║\n", p->strikeSync.quantity);
     printf(          "\t\t\t\t\t  ║                                                                ║                         ║\n"
-                     "\t\t\t\t\t  ║       " HI_CYAN " [2] " RESET "Buy " HI_BLUE "[TECH]                       " HI_GREEN "100 Gems           " HI_YELLOW "║     " HI_BLUE " [TECH]    " RESET "%2dx      " HI_YELLOW "║\n", p.techSync.quantity);
+                     "\t\t\t\t\t  ║       " HI_CYAN " [2] " RESET "Buy " HI_BLUE "[TECH]                       " HI_GREEN "100 Gems           " HI_YELLOW "║     " HI_BLUE " [TECH]    " RESET "%2dx      " HI_YELLOW "║\n", p->techSync.quantity);
     printf(          "\t\t\t\t\t  ║                                                                ║                         ║\n"
-                     "\t\t\t\t\t  ║       " HI_CYAN " [3] " RESET "Buy " REG_YELLOW "[SUPPORT]                    " HI_GREEN "100 Gems           " HI_YELLOW "║     " REG_YELLOW " [SUPPORT] " RESET "%2dx      " HI_YELLOW "║\n", p.supportSync.quantity);
+                     "\t\t\t\t\t  ║       " HI_CYAN " [3] " RESET "Buy " REG_YELLOW "[SUPPORT]                    " HI_GREEN "100 Gems           " HI_YELLOW "║     " REG_YELLOW " [SUPPORT] " RESET "%2dx      " HI_YELLOW "║\n", p->supportSync.quantity);
     printf(          "\t\t\t\t\t  ║                                                                ║                         ║\n"
                      "\t\t\t\t\t  ║                                                                ║                         ║\n"
                      "\t\t\t\t\t  ╚════════════════════════════════════════════════════════════════╩═════════════════════════╝" RESET "\n");
@@ -376,7 +376,7 @@ void DisplayShop(Player p) {
 
 }
 
-void DisplayBlackRoom(Player p) {
+void DisplayBlackRoom(const Player* p) {
     printf("\n\n\n\n");
     printf("\t\t\t\t\t\t\t     ____  _            _      ____                       \n"
            "\t\t\t\t\t\t\t    | __ )| | __ _  ___| | __ |  _ \\ ___   ___  _ __ ___  \n"
@@ -386,7 +386,7 @@ void DisplayBlackRoom(Player p) {
     //printf("\n\n\n\t\t\t\t\t\t\t\t");
     printf("\n\n");
     DisplayOmori();
-    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n" RESET, p.floor);
+    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n" RESET, p->floor);
     printf("\n\t\t\t\t\t\t\t\t\t     Proceed to Battle?\n");
     printf("\n\t\t\t\t\t\t\t\t\t      " HI_GREEN "[1] Yes\n");
     printf("\n\t\t\t\t\t\t\t\t\t      " HI_BLUE "[2] Check Inventory\n" RESET);
@@ -394,9 +394,9 @@ void DisplayBlackRoom(Player p) {
 
 }
 
-void DisplayBattleUI(Player p, Enemy e, bool isPlayerTurn) {
+void DisplayBattleUI(const Player* p, const Enemy* e, bool isPlayerTurn) {
     int max = 0;
-    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t\t Floor: %d\n\n" RESET, p.floor);
+    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t\t Floor: %d\n\n" RESET, p->floor);
     PrintEnemy(e);
     DisplayAllSyncs(p, &max, true, isPlayerTurn);
     printf(REG_RED "\n\t\t\t\t\t\t\t\t\t\t[4] End Turn" RESET);

@@ -13,28 +13,28 @@ void ResetPlayerStats(Player* player);
 void InitializeEnemy(Enemy* e, char type);
 char PrepareEnemyType(int floor);
 
-bool IsBattleOver(Player p, Enemy e);
+bool IsBattleOver(const Player* p, const Enemy* e);
 
-void UpdateScreenWithLog(Player p, Enemy e, char log[LOG_LENGTH], bool isPlayerTurn);
-void UpdateScreen(Player p, Enemy e, bool isPlayerTurn);
+void UpdateScreenWithLog(const Player* p, const Enemy* e, char log[LOG_LENGTH], bool isPlayerTurn);
+void UpdateScreen(const Player* p, const Enemy* e, bool isPlayerTurn);
 
-void HandleSyncQuantity(Sync* sync, Player* p, Enemy e, int syncNum, char log[LOG_LENGTH]);
-void CheckPlayerSyncQuantity(Player* p, Enemy e, int syncNum, char log[LOG_LENGTH]);
+void HandleSyncQuantity(Sync* sync, const Player* p, const Enemy* e, int syncNum, char log[LOG_LENGTH]);
+void CheckPlayerSyncQuantity(Player* p, const Enemy* e, int syncNum, char log[LOG_LENGTH]);
 
-void PlayerStrikeMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync);
-void PlayerTechMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync);
+void PlayerStrikeMove(const Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSync);
+void PlayerTechMove(const Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSync);
 void SyncHeal(Sync* sync, int heal);
 void PlayerSupportMove(Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSync);
 
-void EnemyStrikeMove(Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]);
-void EnemyTechMove(Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]);
-void EnemySupportMove(Enemy* e, Player* p, char log[LOG_LENGTH]);
-int EnemyMoveDecision(Player* p, Enemy* e, int lastSync);
+void EnemyStrikeMove(const Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]);
+void EnemyTechMove(const Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]);
+void EnemySupportMove(Enemy* e,const Player* p, char log[LOG_LENGTH]);
+int EnemyMoveDecision(const Player* p, const Enemy* e, int lastSync);
 void EnemyMove(Enemy* e, Player* p, char log[LOG_LENGTH], int lastSync);
 
-bool CheckPlayerMove(Player p, int lastSync);
-void UpdatePlayerFlinchCounters(Player* p, Enemy* e, char log[LOG_LENGTH]);
-void UpdateEnemyFlinchCounter(Player* p, Enemy* e, char log[LOG_LENGTH]);
+bool CheckPlayerMove(const Player* p, int lastSync);
+void UpdatePlayerFlinchCounters(Player* p, const Enemy* e, char log[LOG_LENGTH]);
+void UpdateEnemyFlinchCounter(const Player* p, Enemy* e, char log[LOG_LENGTH]);
 
 
 void CheckPlayerStatus(Player* p);
