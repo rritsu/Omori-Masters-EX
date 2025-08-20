@@ -3,8 +3,8 @@
 #include "enemyVisual.h"
 #include "playerVisual.h"
 
-#include "../logic/struct.h"
-#include "../logic/utility.h"
+
+
 #include "../logic/values.h"
 
 void PrintSeparator() {
@@ -189,9 +189,21 @@ void PlayerStrikeMoveLog(char log[LOG_LENGTH], int damage) {
    // Sleep(LOG_DELAY);
 }
 
-void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int lastSync) {
+void PlayerTechAttemptLog(char log[LOG_LENGTH]) {
+    sprintf(log, RESET sys "[SYSTEM]: Player has attempted to " HI_PURPLE "FLINCH" RESET " the Enemy...");
+}
+
+void PlayerTechMoveLog(char log[LOG_LENGTH], bool success) {
     char add[100];
-    switch(lastSync) {
+    if(success) sprintf(add, "[SYSTEM]: It successed! Enemy is now " HI_PURPLE "FLINCHED" RESET " for 2 turns.");
+    else sprintf(add, "[SYSTEM]: It failed! Nothing happened...");
+    strcat(log, "\n\t\t");
+    strcat(log, add);
+}
+
+void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int syncNum) {
+    char add[100];
+    switch(syncNum) {
         case 1: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_RED "[STRIKE]" RESET " sync!", damage); break; 
         case 2: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " HI_BLUE "[TECH]" RESET " sync!", damage); break;
         case 3: sprintf(add, "[SYSTEM]: Enemy dealt %d damage to the player's " REG_YELLOW "[SUPPORT]" RESET "sync!", damage); break;
@@ -203,14 +215,29 @@ void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int lastSync) {
  //   Sleep(LOG_DELAY);
 }
 
-void PlayerTechAttemptLog(char log[LOG_LENGTH]) {
-    sprintf(log, RESET sys "[SYSTEM]: Player has attempted to " HI_PURPLE "FLINCH" RESET " the Enemy...");
+void EnemyTechAttemptLog(char log[LOG_LENGTH], int syncNum) {
+    char add[100];
+    switch(syncNum) {
+        case 1: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_RED "[STRIKE]" RESET "..."); break; 
+        case 2: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_BLUE "[TECH]" RESET "..."); break;
+        case 3: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " REG_YELLOW "[SUPPORT]" RESET "..."); break;
+    }
+    strcat(log, "\n\t\t");
+    strcat(log, add);
 }
 
-void PlayerTechMoveLog(char log[LOG_LENGTH], bool success) {
+void EnemyTechMoveLog(char log[LOG_LENGTH], int syncNum, bool success) {
     char add[100];
-    if(success) sprintf(add, "[SYSTEM]: It successed! Enemy is now " HI_PURPLE "FLINCHED" RESET " for 2 turns.");
-    else sprintf(add, "[SYSTEM]: It failed! Nothing happened...");
+    if(success) {
+        switch(syncNum) {
+            case 1: sprintf(add, "[SYSTEM]: It successed! Player's " HI_RED "[STRIKE]" RESET " sync is now " HI_PURPLE "FLINCHED" RESET " for 2 turns."); break; 
+            case 2: sprintf(add, "[SYSTEM]: It successed! Player's " HI_BLUE "[TECH]" RESET " sync is now " HI_PURPLE "FLINCHED" RESET " for 2 turns."); break;
+            case 3: sprintf(add, "[SYSTEM]: It successed! Player's " REG_YELLOW "[SUPPORT]" RESET " sync is now " HI_PURPLE "FLINCHED" RESET " for 2 turns."); break;
+        }
+    }
+    else {
+        sprintf(add, "[SYSTEM]: It failed! Nothing happened...");
+    }
     strcat(log, "\n\t\t");
     strcat(log, add);
 }

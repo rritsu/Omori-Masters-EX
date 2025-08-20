@@ -16,6 +16,7 @@
         "values.h": "c",
         "cmath": "c",
         "string.h": "c",
-        "battle.h": "c"
+        "battle.h": "c",
+        "stdlib.h": "c"
     }
 }

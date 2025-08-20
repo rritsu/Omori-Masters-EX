@@ -163,7 +163,7 @@ void PlayerTechMove(Player p, Enemy* e, char log[LOG_LENGTH], int* lastSync) {
     if(p.techSync.HP > 0) {
         if(!p.techSync.isFlinched) {
             if(!e->sync.isFlinched) {
-                int chance = GenerateRandomNum(1, 2);
+                int chance = GenerateRandomNum(1, 10);
                 PlayerTechAttemptLog(log);
                 UpdateScreenWithLog(p, *e, log, false);
                 Sleep(LOG_DELAY);  
@@ -217,14 +217,43 @@ void EnemyStrikeMove(Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]) {
 }
 
 void EnemyTechMove(Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]) {
-    int chance = GenerateRandomNum(1, e->flinchRate/10);
+    int chance = GenerateRandomNum(1, 100);
+    int rate = e->flinchRate;
+    EnemyTechAttemptLog(log, lastSync);
+    UpdateScreenWithLog(*p, *e, log, false);
+    Sleep(LOG_DELAY); 
+
+    if(chance <= rate) {
+        switch(lastSync) {
+            case 1: 
+                p->strikeSync.isFlinched = true;
+                p->strikeSync.flinchCounter = 2;
+                break;
+            case 2:
+                p->techSync.isFlinched = true;
+                p->techSync.flinchCounter = 2;
+                break;
+            case 3:
+                p->supportSync.isFlinched = true;
+                p->supportSync.flinchCounter = 2;
+                break;
+        }
+        EnemyTechMoveLog(log, lastSync, true);
+    }
+    else {
+        EnemyTechMoveLog(log, lastSync, false);
+    }
+
+    UpdateScreenWithLog(*p, *e, log, true);
+    //Sleep(LONG_DELAY);
+    
 }
 
 int EnemyMoveDecision(Player* p, Enemy* e, int lastSync) {
     int move = 1;
     bool valid = false;
     while(!valid) {
-        move = GenerateRandomNum(1, 3);
+        move = GenerateRandomNum(1, 2);
         if(move == 2) {
             switch(lastSync) {
                 case 1: if(!p->strikeSync.isFlinched) valid = true; break; 
@@ -250,7 +279,7 @@ void EnemyMove(Enemy* e, Player* p, char log[LOG_LENGTH], int lastSync) {
         //int enemyMove = 1
         switch(enemyMove) {
             case 1: EnemyStrikeMove(e, p, lastSync, log); break;
-            //case 2: 
+            case 2: EnemyTechMove(e, p, lastSync, log); break;
         }
     }
     else {
@@ -310,7 +339,7 @@ void UpdatePlayerFlinchCounters(Player* p, Enemy* e, char log[LOG_LENGTH]) {
     }
 
     if(update) {
-        UpdateScreenWithLog(*p, *e, log, true);
+        UpdateScreenWithLog(*p, *e, log, false);
         Sleep(LOG_DELAY);
     }
 }
@@ -331,51 +360,6 @@ void UpdateEnemyFlinchCounter(Player* p, Enemy* e, char log[LOG_LENGTH]) {
         Sleep(LOG_DELAY);
     };
 }
-
-// void UpdateFlinchCounters(Player* p, Enemy* e, char log[LOG_LENGTH]) {
-//     bool update = false;
-
-//     if(p->strikeSync.isFlinched) {
-//         p->strikeSync.flinchCounter -= 1;
-//         update = true;
-//         if(p->strikeSync.flinchCounter == 0){ 
-//             p->strikeSync.isFlinched = false;
-//             ResetFlinchCounterLog(log, 1);
-//         }
-//     }
-
-//     if(p->techSync.isFlinched) {
-//         p->techSync.flinchCounter -= 1;
-//         update = true;
-//         if(p->techSync.flinchCounter == 0){ 
-//             p->techSync.isFlinched = false;
-//             ResetFlinchCounterLog(log, 2);
-//         }
-//     }
-
-//     if(p->supportSync.isFlinched) {
-//         p->supportSync.flinchCounter -= 1;
-//         update = true;
-//         if(p->supportSync.flinchCounter == 0) {
-//             p->supportSync.isFlinched = false;
-//             ResetFlinchCounterLog(log, 3);
-//         }
-//     }
-
-//     if(e->sync.isFlinched) {
-//         e->sync.flinchCounter -= 1;
-//         update = true;
-//         if(e->sync.flinchCounter == 0) { 
-//             e->sync.isFlinched = false;
-//             ResetFlinchCounterLog(log, 0);
-//         }
-//     }
-
-//     if(update) {
-//         UpdateScreenWithLog(*p, *e, log, true);
-//         Sleep(LOG_DELAY);
-//     }
-// }
 
 bool IsBattleOver(Player p, Enemy e) {
     bool isOver = false;

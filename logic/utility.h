@@ -5,7 +5,7 @@
 #define DELAY 750
 #define LOG_DELAY 1200
 #define LONG_DELAY 1800
-#define LOG_LENGTH 300
+#define LOG_LENGTH 400
 
 #include <stdbool.h>
 #include <windows.h>

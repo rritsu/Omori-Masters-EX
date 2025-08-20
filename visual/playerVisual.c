@@ -1,6 +1,6 @@
 #include "playerVisual.h"
 #include "colors.h"
-#include "../logic/struct.h"
+
 
 
 void DisplayHP(int quantity, int HP, char syncHP[]) {
