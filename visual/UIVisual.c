@@ -19,10 +19,25 @@ void DisplayMenuOptions() {
     printf(HI_RED   "\t\t\t\t\t\t\t\t\t     [4] Quit\n\n\n\n\n\n\n" RESET);
 }
 
+void DisplayBlackRoomOptions() {
+    printf("\n\t\t\t\t\t\t\t\t\t     Proceed to Battle?\n");
+    printf("\n\t\t\t\t\t\t\t\t\t     " HI_GREEN "[1] Yes\n");
+    printf("\n\t\t\t\t\t\t\t\t\t     " HI_BLUE "[2] Check Inventory\n" RESET);
+    printf("\n\t\t\t\t\t\t\t\t\t     " HI_PURPLE "[3] Reset Progress\n" RESET);
+    printf("\n\t\t\t\t\t\t\t\t\t     " HI_RED  "[4] Go back" RESET);
+}
+
 void DisplayExitConfirmation() {
     printf(HI_CYAN"\t\t\t\t\t\t\t\t\t     Confirm Exit?\n\n");
     printf(HI_RED "\t\t\t\t\t\t\t\t\t        [1] Yes\n\n");
     printf(HI_BLUE"\t\t\t\t\t\t\t\t\t        [2] No \n\n" RESET);
+}
+
+void DisplayResetConfirmation() {
+    printf("\n\n");
+    printf(HI_CYAN"\t\t\t\t\t\t\t\t\t      Return to Floor 1?\n\n");
+    printf(HI_RED "\t\t\t\t\t\t\t\t\t          [1] Yes\n\n");
+    printf(HI_BLUE"\t\t\t\t\t\t\t\t\t          [2] No \n\n" RESET);
 }
 
 void DisplayMainMenu(bool showExitPrompt) {
@@ -102,6 +117,12 @@ void ExitGameNotice() {
     Sleep(DELAY);
 }
 
+void ResetProgressNotice() {
+    printf(RESET sys);
+    printf("[SYSTEM]: Progress has been reset. You're back on Floor 1\n");
+    Sleep(DELAY);
+}
+
 void PurchaseNotice(char c, bool success) {
     printf(RESET sys);
     if(success) {
@@ -128,6 +149,23 @@ void ReturnToMenuNotice() {
     printf("[SYSTEM]: Returning to Main Menu...\n");
     Sleep(DELAY);
 }
+
+void SpecialRewardNotice(char c, int gems) {
+    printf(RESET sys);
+    switch(c) {
+        case '1': printf("[SYSTEM]: All ally syncs have been restored to " HI_GREEN "full health" RESET "!\n"); break;
+        case '2': 
+        case '3': printf("[SYSTEM]: You've earned " HI_GREEN "%d gems" RESET "!\n", gems); break;
+    }
+    printf(RESET "\t\tPress any key to continue...\n");
+    Sleep(DELAY);
+}
+
+// void PressAnyKeyNotice() {
+//     printf(RESET sys);
+//     printf("Press any key to continue...\n");
+//     Sleep(DELAY);
+// }
 
 void DisplayBattleLog(char log[LOG_LENGTH]) {
     //printf(RESET sys);
@@ -190,7 +228,7 @@ void PlayerStrikeMoveLog(char log[LOG_LENGTH], int damage) {
 }
 
 void PlayerTechAttemptLog(char log[LOG_LENGTH]) {
-    sprintf(log, RESET sys "[SYSTEM]: Player has attempted to " HI_PURPLE "FLINCH" RESET " the Enemy...");
+    sprintf(log, RESET sys "[SYSTEM]: Player attempted to " HI_PURPLE "FLINCH" RESET " the Enemy...");
 }
 
 void PlayerTechMoveLog(char log[LOG_LENGTH], bool success) {
@@ -202,8 +240,12 @@ void PlayerTechMoveLog(char log[LOG_LENGTH], bool success) {
 }
 
 void PlayerSupportMoveLog(char log[LOG_LENGTH], int heal, bool success) {
-    if(success) sprintf(log, RESET sys "[SYSTEM]: Player has healed all of their syncs! All allies recovered " REG_GREEN "%d HP" RESET "!", heal);
+    if(success) sprintf(log, RESET sys "[SYSTEM]: Player healed all of their syncs! All allies recovered " REG_GREEN "%d HP" RESET "!", heal);
     else sprintf(log, RESET sys "[SYSTEM]: All allies are at full HP... nothing happened.");
+}
+
+void PlayerEndTurnLog(char log[LOG_LENGTH]) {
+    sprintf(log, RESET sys "[SYSTEM]: Player ended their turn...");
 }
 
 void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int syncNum) {
@@ -223,9 +265,9 @@ void EnemyStrikeMoveLog(char log[LOG_LENGTH], int damage, int syncNum) {
 void EnemyTechAttemptLog(char log[LOG_LENGTH], int syncNum) {
     char add[100];
     switch(syncNum) {
-        case 1: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_RED "[STRIKE]" RESET " sync..."); break; 
-        case 2: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_BLUE "[TECH]" RESET " sync..."); break;
-        case 3: sprintf(add, "[SYSTEM]: Enemy has attempted to " HI_PURPLE "FLINCH" RESET " the player's " REG_YELLOW "[SUPPORT]" RESET " sync..."); break;
+        case 1: sprintf(add, "[SYSTEM]: Enemy attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_RED "[STRIKE]" RESET " sync..."); break; 
+        case 2: sprintf(add, "[SYSTEM]: Enemy attempted to " HI_PURPLE "FLINCH" RESET " the player's " HI_BLUE "[TECH]" RESET " sync..."); break;
+        case 3: sprintf(add, "[SYSTEM]: Enemy attempted to " HI_PURPLE "FLINCH" RESET " the player's " REG_YELLOW "[SUPPORT]" RESET " sync..."); break;
     }
     strcat(log, "\n\t\t");
     strcat(log, add);
@@ -263,13 +305,16 @@ void DefeatedEnemyLog(char log[LOG_LENGTH]) {
 
 }
 
-void PlayerWinsLog(char log[LOG_LENGTH]) {
-    // char add[100];
-    // sprintf(add, RESET "[SYSTEM]: You won!");
-    // strcat(log, "\n\t\t");
-    // strcat(log, add);
-    sprintf(log, RESET sys "[SYSTEM]: You WON! You may proceed to the next floor");
-    strcat(log, "\n\t\tPress any key to continue...");
+void PlayerWinsLog(char log[LOG_LENGTH], int gems) {
+    sprintf(log, RESET sys "[SYSTEM]: You WON! You earned " HI_GREEN "%d Gems" RESET "!", gems);
+}
+
+void NextFloorLog(char log[LOG_LENGTH]) {
+    char add[100];
+    sprintf(add, "[SYSTEM]: You may proceed to the next floor");
+    strcat(add, "\n\t\tPress any key to continue...");
+    strcat(log, "\n\t\t");
+    strcat(log, add);
 }
 
 void PlayerLossesLog(char log[LOG_LENGTH]) {
@@ -311,18 +356,6 @@ void NoSyncsLog(char log[LOG_LENGTH], int syncNum) {
     strcat(log, add);
 }
 
-// void SampleBattle(Player p) {
-//     int max = 0;
-//     printf("\n");
-//     PrintBasil();
-//     //DisplaySyncPairs(p);
-
-//     PrintSeparator();
-
-//     printf("\n");
-//     DisplayAllSyncs(p, &max, true);
-//    // DisplayStrikePair(p);
-// }
 
 void DisplayInventory(const Player* p) {
     int max = 0;
@@ -334,15 +367,16 @@ void DisplayInventory(const Player* p) {
            HI_BLUE   "\t\t\t\t\t\t\t\t ▓| || | | \\ V /  __/ | | | || (_) | |  | |_| |\n"
                      "\t\t\t\t\t\t\t\t▓|___|_| |_|\\_/ \\___|_| |_|\\__\\___/|_|   \\__, |\n"
                      "\t\t\t\t\t\t\t\t                                         |___/ \n");
-    printf(RESET "\n\t\t\t\t\t\t\t  ═══════════════════════════════════════════════════════════\n");    
-    printf("\n\n\n\n\n");
+    printf(RESET "\n\t\t\t\t\t\t\t═════════════════════════════════════════════════════════════\n");    
+    printf("\n\n\n\n");
     printf(REG_RED"\t\t     [STRIKE] " RESET "Deals 10-20 damage \t\t\t");
     printf(REG_BLUE "[TECH] " RESET "Has a 20%% chance of \t\t\t     ");
     printf(REG_YELLOW "[SUPPORT] " RESET "Heals 8-15 HP\n");
 
     printf("\t\t\t   to the opponent \t\t\t\tmaking the opponent " HI_PURPLE "FLINCH" RESET "\t\t\t\ton all ally syncs\n\n");
     DisplayAllSyncs(p, &max, true, true);
-    printf(HI_RED "\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n\n" RESET);
+    printf(RESET "\n\n\t\t\t\t\t\t\t\t\t     Current Gems: " HI_GREEN "%d\n", p->gems);
+    printf(HI_RED "\n\n\n\t\t\t\t\t\t\t\t\t\t[4] Go back\n\n" RESET);
 }
 
 void DisplayShop(const Player* p) {
@@ -376,22 +410,18 @@ void DisplayShop(const Player* p) {
 
 }
 
-void DisplayBlackRoom(const Player* p) {
-    printf("\n\n\n\n");
+void DisplayBlackRoom(const Player* p, bool showResetPrompt) {
+    printf("\n\n");
     printf("\t\t\t\t\t\t\t     ____  _            _      ____                       \n"
            "\t\t\t\t\t\t\t    | __ )| | __ _  ___| | __ |  _ \\ ___   ___  _ __ ___  \n"
            "\t\t\t\t\t\t\t    |  _ \\| |/ _` |/ __| |/ / | |_) / _ \\ / _ \\| '_ ` _ \\ \n"
            "\t\t\t\t\t\t\t    | |_) | | (_| | (__|   <  |  _ < (_) | (_) | | | | | |\n"
            "\t\t\t\t\t\t\t    |____/|_|\\__,_|\\___|_|\\_\\ |_| \\_\\___/ \\___/|_| |_| |_|\n");
-    //printf("\n\n\n\t\t\t\t\t\t\t\t");
     printf("\n\n");
     DisplayOmori();
     printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n" RESET, p->floor);
-    printf("\n\t\t\t\t\t\t\t\t\t     Proceed to Battle?\n");
-    printf("\n\t\t\t\t\t\t\t\t\t      " HI_GREEN "[1] Yes\n");
-    printf("\n\t\t\t\t\t\t\t\t\t      " HI_BLUE "[2] Check Inventory\n" RESET);
-    printf("\n\t\t\t\t\t\t\t\t\t      " HI_RED  "[3] Go back" RESET);
-
+    if(!showResetPrompt) DisplayBlackRoomOptions();
+    else DisplayResetConfirmation();
 }
 
 void DisplayBattleUI(const Player* p, const Enemy* e, bool isPlayerTurn) {
@@ -402,3 +432,33 @@ void DisplayBattleUI(const Player* p, const Enemy* e, bool isPlayerTurn) {
     printf(REG_RED "\n\t\t\t\t\t\t\t\t\t\t[4] End Turn" RESET);
 }
 
+void DisplaySpecialRewardOption() {
+    printf("\n\n\n\n\n");
+    printf("\t\t\t\t\t\t\t     You've won against a Challenger in your previous battle...\n\n"
+           "\t\t\t\t\t\t\t                      Please choose a reward!\n\n\n\n");
+    printf("\t\t\t\t\t\t\t   " HI_YELLOW "     ╔═══════════════╦══════════════════════════════════╗\n"
+           "\t\t\t\t\t\t\t        ║               │                                  ║\n"
+           "\t\t\t\t\t\t\t        ║               │       " RESET "Fully Restores the         " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t   " HI_GREEN "[1]" HI_YELLOW "  ║   " HI_GREEN "Full Heal" HI_YELLOW "   │       " RESET "health of all syncs        " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t   " HI_YELLOW "     ║               │       " RESET "on the current team        " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t        ║               │                                  ║\n"
+           "\t\t\t\t\t\t\t        ╚═══════════════╩══════════════════════════════════╝\n\n\n\n");
+    printf("\t\t\t\t\t\t\t        ╔═══════════════╦══════════════════════════════════╗\n"
+           "\t\t\t\t\t\t\t        ║               │                                  ║\n"
+           "\t\t\t\t\t\t\t        ║               │       " RESET "Gives the player           " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t   " HI_CYAN "[2]" HI_YELLOW "  ║   " HI_CYAN "500 Gems" HI_YELLOW "    │       " RESET "a constant amount          " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t        ║               │       " RESET "of 500 Gems                " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t        ║               │                                  ║\n"
+           "\t\t\t\t\t\t\t        ╚═══════════════╩══════════════════════════════════╝\n\n\n\n");
+    printf("\t\t\t\t\t\t\t        ╔═══════════════╦══════════════════════════════════╗\n"
+           "\t\t\t\t\t\t\t        ║               │                                  ║\n"
+           "\t\t\t\t\t\t\t        ║               │       " RESET "Rewards the player         " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t   " HI_BLUE "[3]" HI_YELLOW "  ║  " HI_BLUE "Random Gems" HI_YELLOW "  │       " RESET "a random amount            " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t        ║               │       " RESET "of 100 to 1000 gems        " HI_YELLOW "║\n"
+           "\t\t\t\t\t\t\t        ║               │                                  ║\n"
+           "\t\t\t\t\t\t\t        ╚═══════════════╩══════════════════════════════════╝\n" RESET);
+    printf("\n\n\n\n\n");
+}
+
+
+//congratulations screen

@@ -8,8 +8,7 @@
 #include "struct.h"
 //#include "../visual/UIVisual.h"
 
-void InitializePlayer(Player* player);
-void ResetPlayerStats(Player* player);
+
 void InitializeEnemy(Enemy* e, char type);
 char PrepareEnemyType(int floor);
 
@@ -25,6 +24,7 @@ void PlayerStrikeMove(const Player* p, Enemy* e, char log[LOG_LENGTH], int* last
 void PlayerTechMove(const Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSync);
 void SyncHeal(Sync* sync, int heal);
 void PlayerSupportMove(Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSync);
+void PlayerEndTurn(Player* p, Enemy* e,char log[LOG_LENGTH]);
 
 void EnemyStrikeMove(const Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]);
 void EnemyTechMove(const Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]);
@@ -39,6 +39,6 @@ void UpdateEnemyFlinchCounter(const Player* p, Enemy* e, char log[LOG_LENGTH]);
 
 void CheckPlayerStatus(Player* p);
 
-void BattleLoop(Player* player);
+void BattleLoop(Player* player, bool* playerWin);
 
 #endif

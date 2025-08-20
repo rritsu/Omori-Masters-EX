@@ -4,52 +4,6 @@
 //#include "struct.h"
 #include "../visual/UIVisual.h"
 
-void InitializePlayer(Player* player) {
-    player->strikeSync.HP = 3;
-    player->strikeSync.quantity = 2;
-    player->strikeSync.isFlinched = false;
-    player->strikeSync.flinchCounter = 0;
-
-    player->techSync.HP = 10;
-    player->techSync.quantity = 2;
-    player->techSync.isFlinched = false;
-    player->techSync.flinchCounter = 0;
-
-    player->supportSync.HP = 3;
-    player->supportSync.quantity = 2;
-    player->supportSync.isFlinched = false;
-    player->supportSync.flinchCounter = 0;
-
-    player->gems = 1000;
-    player->floor = 1;
-}
-
-
-void ResetPlayerStats(Player* player) {
-    player->floor = 1;
-    player->strikeSync.HP = 100;
-    player->strikeSync.quantity = 1;
-    player->strikeSync.isFlinched = false;
-    player->strikeSync.flinchCounter = 0;
-
-    if(player->techSync.quantity <= 0) {
-        player->techSync.quantity = 1;
-    }
-    if(player->supportSync.quantity <= 0) {
-        player->supportSync.quantity = 1;
-    }
-
-    player->techSync.HP = 100;
-    player->techSync.isFlinched = false;
-    player->techSync.flinchCounter = 0;
-
-    player->supportSync.HP = 100;
-    player->supportSync.isFlinched = false;
-    player->supportSync.flinchCounter = 0;
-
-}
-
-
 void UpdateScreenWithLog(const Player* p, const Enemy* e, char log[LOG_LENGTH], bool isPlayerTurn) {
     system("cls");
     DisplayBattleUI(p, e, isPlayerTurn);
@@ -240,6 +194,12 @@ void PlayerSupportMove(Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSync)
     }
 }
 
+void PlayerEndTurn(Player* p, Enemy* e,char log[LOG_LENGTH]) {
+    PlayerEndTurnLog(log);
+    UpdateScreenWithLog(p, e, log, false);        
+    Sleep(LONG_DELAY);
+}
+
 void EnemyStrikeMove(const Enemy* e, Player* p, int lastSync, char log[LOG_LENGTH]) {
     int damage = GenerateRandomNum(e->dmgRange[0], e->dmgRange[1]);
     switch(lastSync) {
@@ -417,9 +377,15 @@ void CheckPlayerStatus(Player* p) {
     if(p->strikeSync.quantity <= 0) {
         ResetPlayerStats(p);
     }
+    else {
+        p->floor += 1;
+        if(p->floor > 20)
+            p->floor = 20;
+        ResetFlinchCounter(p);
+    }
 }
 
-void BattleLoop(Player* player) {
+void BattleLoop(Player* player, bool* playerWin) {
     Enemy enemy;
     InitializeEnemy(&enemy, PrepareEnemyType(player->floor));
     int lastSync = 1;
@@ -436,7 +402,7 @@ void BattleLoop(Player* player) {
             case '1': PlayerStrikeMove(player, &enemy, log, &lastSync); break;
             case '2': PlayerTechMove(player, &enemy, log, &lastSync); break;
             case '3': PlayerSupportMove(player, &enemy, log, &lastSync); break;
-           // case '4': PlayerEndTurn(); break;
+            case '4': PlayerEndTurn(player, &enemy, log); break;
         }
 
 
@@ -461,14 +427,19 @@ void BattleLoop(Player* player) {
     } while (!IsBattleOver(player, &enemy));
 
     if(player->strikeSync.quantity <= 0) {
+        *playerWin = false;
         PlayerLossesLog(log);
         UpdateScreenWithLog(player, &enemy, log, false);
+       
       //  ResetPlayerStats(player);  //check na lang stats sa pagbalik sa black room
-
     }
     else if(enemy.sync.HP <= 0) {
-        PlayerWinsLog(log);
-        UpdateScreenWithLog(player, &enemy, log, false);   
+        *playerWin = true;
+        PlayerWinsLog(log, GetGemsReward(player->floor));
+        UpdateScreenWithLog(player, &enemy, log, false);
+        Sleep(LONG_DELAY);
+        NextFloorLog(log);
+        UpdateScreenWithLog(player, &enemy, log, false);
     }
     
    // Sleep(LOG_DELAY);

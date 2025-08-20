@@ -67,6 +67,67 @@ int GetEnemyMaxHP(char type) {
 	return 0;
 }
 
+void ResetPlayerHP(Player* p) {
+    p->strikeSync.HP = 100;
+    p->techSync.HP = 100;
+    p->supportSync.HP = 100;
+}
+
+void ResetFlinchCounter(Player* p) {
+    p->strikeSync.isFlinched = false;
+    p->strikeSync.flinchCounter = 0;
+
+    p->techSync.isFlinched = false;
+    p->techSync.flinchCounter = 0;
+
+    p->supportSync.isFlinched = false;
+    p->supportSync.flinchCounter = 0;
+}
+
+void InitializePlayer(Player* player) {
+    ResetPlayerHP(player);
+    ResetFlinchCounter(player);
+    player->strikeSync.quantity = 1;
+    player->techSync.quantity = 1;
+    player->supportSync.quantity = 1;
+    player->gems = 0;
+    player->floor = 1;
+}
+
+
+void ResetPlayerStats(Player* player) {
+    ResetPlayerHP(player);
+    ResetFlinchCounter(player);
+
+    if(player->strikeSync.quantity <= 0) {
+        player->strikeSync.quantity = 1;
+    }
+    if(player->techSync.quantity <= 0) {
+        player->techSync.quantity = 1;
+    }
+    if(player->supportSync.quantity <= 0) {
+        player->supportSync.quantity = 1;
+    }
+    player->floor = 1;
+}
+
+bool IsEliteFloor(int floor) {
+    if(floor % 5 == 0)
+        return true;
+    else 
+        return false;
+}
+
+int GetGemsReward(int floor) {
+    int gems;
+    if(floor >= 1 && floor <= 10) gems = 50;
+    else if(floor >= 11 && floor <= 15) gems = 80;
+    else if(floor >= 16 && floor <= 19) gems = 100;
+    else gems = 500;
+
+    return gems;
+}
+
 
 
 

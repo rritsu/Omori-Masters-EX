@@ -8,8 +8,8 @@
 // #define REWARD_D 500
 
 #define STRIKE_COST 200
-#define TECH_COST 100
-#define SUPPORT_COST 100
+#define TECH_COST 200
+#define SUPPORT_COST 200
 
 
 

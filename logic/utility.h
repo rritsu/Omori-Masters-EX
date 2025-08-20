@@ -13,6 +13,8 @@
 #include <time.h>
 #include <conio.h>
 
+#include "../logic/struct.h"
+
 //#include "../visual/UIVisual.h"
 
 
@@ -22,6 +24,11 @@ int GenerateRandomNum(int min, int max);
 char GetInput(int numInputs);
 void SetBufferLog(char log[LOG_LENGTH], const char* msg);
 int GetEnemyMaxHP(char type);
-
+void ResetPlayerHP(Player* p);
+void ResetFlinchCounter(Player* p);
+void InitializePlayer(Player* player);
+void ResetPlayerStats(Player* player);
+bool IsEliteFloor(int floor);
+int GetGemsReward(int floor);
 
 #endif

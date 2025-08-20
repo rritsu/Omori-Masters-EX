@@ -16,7 +16,9 @@ void GoToInventory(const Player* p);
 void GoToShop(Player* p);
 
 void ConfirmExit(bool* exitGame);
-void GoToWhiteRoom(Player* p);
+void ChooseSpecialReward(Player* p);
+void ConfirmReset(Player* p);
+void GoToBlackRoom(Player* p);
 
 
 void MainMenu();

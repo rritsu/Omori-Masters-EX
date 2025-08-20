@@ -67,28 +67,78 @@ void ConfirmExit(bool* exitGame) {
     }
 }
 
-void GoToWhiteRoom(Player* p) {
+void ChooseSpecialReward(Player* p) {
+    system("cls");
+    DisplaySpecialRewardOption();
+    char c = GetInput(3);
+    int reward = 0;
+    switch(c) {
+        case '1': 
+            SyncHeal(&p->strikeSync, 100);
+            SyncHeal(&p->techSync, 100);
+            SyncHeal(&p->supportSync, 100);
+            break;
+        case '2':
+            reward = 500;
+            p->gems += reward;
+            break;
+        case '3':
+            reward = GenerateRandomNum(100, 1000);
+            p->gems += reward;
+            break;
+    }
+
+    system("cls");
+    DisplaySpecialRewardOption();
+    SpecialRewardNotice(c, reward);
+    c = _getch();
+}
+
+void ConfirmReset(Player* p) {
+    system("cls");
+    DisplayBlackRoom(p, true);
+    char c = GetInput(2);
+    if(c == '1') {
+        ResetPlayerStats(p);
+        ResetProgressNotice();
+    }
+}
+
+void GoToBlackRoom(Player* p) {
     char c;
+    bool fromBattle = false;
+    bool playerWin = false;
     do {
-        CheckPlayerStatus(p);
+        if(fromBattle) {
+            if(IsEliteFloor(p->floor) && playerWin) {
+                ChooseSpecialReward(p);
+            }
+            CheckPlayerStatus(p);
+        }
         system("cls");
-        DisplayBlackRoom(p);
-        c = GetInput(3);
+        DisplayBlackRoom(p, false);
+        c = GetInput(4);
 
         switch(c) {
         case '1':
             RedirectingToBattleNotice();
-            BattleLoop(p);
+            BattleLoop(p, &playerWin);
+            fromBattle = true;
             break;
         case '2':
             RedirectingNotice(c);
             GoToInventory(p);
+            fromBattle = false;
             break;
         case '3':
+            ConfirmReset(p);
+            fromBattle = false;
+            break;
+        case '4':
             RedirectingBackNotice();
             break;
         }
-    } while(c != '3');
+    } while(c != '4');
 }
 
 void MainMenu() {
@@ -102,7 +152,7 @@ void MainMenu() {
         switch (c) {
             case '1':
                 RedirectingNotice(c);
-                GoToWhiteRoom(&player);
+                GoToBlackRoom(&player);
                 break;
             case '2':
                 RedirectingNotice(c);
@@ -119,3 +169,11 @@ void MainMenu() {
     } while (!exitGame); 
 
 }
+
+
+//to do
+// enemy sprites
+// elite enemies sprites
+// elite choices screen
+// congratulations screen
+// help screen(?)
