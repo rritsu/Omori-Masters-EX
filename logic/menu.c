@@ -94,6 +94,11 @@ void ChooseSpecialReward(Player* p) {
     c = _getch();
 }
 
+void RewardPlayer(Player* p) {
+    int reward = GetGemsReward(p->floor);
+    p->gems += reward;
+}
+
 void ConfirmReset(Player* p) {
     system("cls");
     DisplayBlackRoom(p, true);
@@ -112,6 +117,9 @@ void GoToBlackRoom(Player* p) {
         if(fromBattle) {
             if(IsEliteFloor(p->floor) && playerWin) {
                 ChooseSpecialReward(p);
+            }
+            else if(!IsEliteFloor(p->floor) && playerWin){
+                RewardPlayer(p);
             }
             CheckPlayerStatus(p);
         }

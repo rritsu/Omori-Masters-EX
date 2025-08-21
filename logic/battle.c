@@ -39,10 +39,7 @@ void InitializeEnemy(Enemy* e, char type) {
 
 char PrepareEnemyType(int floor) {
     char type;
-    bool isElite = false;
-    if(floor % 5 == 0) isElite = true;
-
-    if(isElite) {
+    if(IsEliteFloor(floor)) {
         //randomize type
     }
     else {

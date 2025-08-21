@@ -419,7 +419,7 @@ void DisplayBlackRoom(const Player* p, bool showResetPrompt) {
            "\t\t\t\t\t\t\t    |____/|_|\\__,_|\\___|_|\\_\\ |_| \\_\\___/ \\___/|_| |_| |_|\n");
     printf("\n\n");
     DisplayOmori();
-    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n" RESET, p->floor);
+    printf(BOLD_WHITE "\n\t\t\t\t\t\t\t\t\t      Current Floor: %d\n\n" RESET, p->floor);
     if(!showResetPrompt) DisplayBlackRoomOptions();
     else DisplayResetConfirmation();
 }
