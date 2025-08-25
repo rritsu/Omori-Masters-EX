@@ -9,7 +9,11 @@
 //#include "../visual/UIVisual.h"
 
 
-void InitializeEnemy(Enemy* e, char type);
+
+void SetChoices(int floor, char first[], char second[], char third[]);
+char GetEliteType(int floor);
+int GetEliteSprite(int floor, char type);
+void InitializeEnemy(Enemy* e, char type, int floor);
 char PrepareEnemyType(int floor);
 
 bool IsBattleOver(const Player* p, const Enemy* e);

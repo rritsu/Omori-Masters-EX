@@ -18,6 +18,7 @@ void GoToShop(Player* p);
 void ConfirmExit(bool* exitGame);
 void ChooseSpecialReward(Player* p);
 void ConfirmReset(Player* p);
+void CongratsScreen();
 void GoToBlackRoom(Player* p);
 
 

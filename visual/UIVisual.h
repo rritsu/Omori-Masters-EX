@@ -23,6 +23,9 @@ void ResetProgressNotice();
 void PurchaseNotice(char c, bool success);
 void ReturnToRoomNotice();
 void ReturnToMenuNotice();
+void SpecialRewardNotice(char c, int gems);
+void GoodluckNotice();
+void PressAnyKeyNotice();
 
 void DisplayBattleLog(char log[LOG_LENGTH]);
 void FlinchedSyncLog(char log[LOG_LENGTH], int syncNum);
@@ -53,9 +56,11 @@ void NoSyncsLog(char log[LOG_LENGTH], int syncNum);
 void DisplayInventory(const Player* p);
 void DisplayShop(const Player* p);
 void DisplayBlackRoom(const Player* p, bool showResetPrompt);
+void DisplayEliteOptions(int floor, char first[], char second[], char third[]);
 void DisplayBattleUI(const Player* p, const Enemy* e, bool isPlayerTurn);
 void DisplaySpecialRewardOption();
-void SpecialRewardNotice(char c, int gems);
+void DisplayCongratsScreen();
+void GalingTangina();
 //void PressAnyKeyNotice();
 
 #endif 

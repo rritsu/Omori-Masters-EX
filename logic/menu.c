@@ -109,6 +109,19 @@ void ConfirmReset(Player* p) {
     }
 }
 
+void CongratsScreen() {
+    system("cls");
+    DisplayCongratsScreen();
+    Sleep(LONG_DELAY);
+    PressAnyKeyNotice();
+    _getch();
+
+    //???????
+    system("cls");
+    GalingTangina();
+    _getch();
+}
+
 void GoToBlackRoom(Player* p) {
     char c;
     bool fromBattle = false;
@@ -117,6 +130,7 @@ void GoToBlackRoom(Player* p) {
         if(fromBattle) {
             if(IsEliteFloor(p->floor) && playerWin) {
                 ChooseSpecialReward(p);
+                if(p->floor == 20) CongratsScreen();
             }
             else if(!IsEliteFloor(p->floor) && playerWin){
                 RewardPlayer(p);

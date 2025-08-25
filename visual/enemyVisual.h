@@ -30,6 +30,22 @@ void PrintSnotBubble(const Enemy* e);
 void PrintAngi(const Enemy* e);
 void PrintHarold(const Enemy* e);
 
+void PrintKanade(const Enemy* e);
+void PrintAubrey(const Enemy* e);
+void PrintTurboGranny(const Enemy* e);
+
+void PrintMizuki(const Enemy* e);
+void PrintUsagi(const Enemy* e);
+void PrintKel(const Enemy* e);
+
+void PrintHero(const Enemy* e);
+void PrintEna(const Enemy* e);
+void PrintHachiware(const Enemy* e);
+
+void PrintChiikawa(const Enemy* e);
+void PrintBasil(const Enemy* e);
+void PrintMafuyu(const Enemy* e);
+
 void PrintEnemy(const Enemy* e);
 
 #endif

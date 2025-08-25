@@ -91,7 +91,7 @@ void InitializePlayer(Player* player) {
     player->techSync.quantity = 1;
     player->supportSync.quantity = 1;
     player->gems = 0;
-    player->floor = 1;
+    player->floor = 20;
 }
 
 

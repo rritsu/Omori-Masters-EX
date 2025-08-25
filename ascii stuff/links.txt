@@ -1,2 +1,8 @@
 JBlond/bash-colors.md (ascii color codes)
 https://gist.github.com/JBlond/2fea43a3049b38287e5e9cefc87b2124
+
+https://patorjk.com/software/taag/#p=testall&f=Efti%20Wall&t=Black%20Room
+
+https://theasciicode.com.ar/extended-ascii-code/box-drawings-double-line-horizontal-down-character-ascii-code-203.html
+
+https://www.asciiart.eu/image-to-ascii#google_vignette

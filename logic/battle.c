@@ -15,7 +15,90 @@ void UpdateScreen(const Player* p, const Enemy* e, bool isPlayerTurn) {
     DisplayBattleUI(p, e, isPlayerTurn);
 }
 
-void InitializeEnemy(Enemy* e, char type) {
+void SetChoices(int floor, char first[], char second[], char third[]) {
+    switch(floor) {
+        case 5:
+            strcpy(first, "Kanade");
+            strcpy(second, "Aubrey"); 
+            strcpy(third, "Turbo Granny"); 
+            break;
+        case 10:
+            strcpy(first, "Mizuki");
+            strcpy(second, "Usagi"); 
+            strcpy(third, "Kel"); 
+            break;
+        case 15:
+            strcpy(first, "Hero");
+            strcpy(second, "Ena"); 
+            strcpy(third, "Hachiware"); 
+            break;
+        case 20: 
+            strcpy(first, "Chiikawa");
+            strcpy(second, "Basil"); 
+            strcpy(third, "Mafuyu"); 
+            break;
+    }
+}
+
+char GetEliteType(int floor) {
+    char type;
+    char c = GetInput(3);
+    switch(floor) {
+        case 5:
+            if(c == '1') type = '2';
+            else if(c == '2') type = '1';
+            else if(c == '3') type = '3';
+            break;
+        case 10:
+            if(c == '1') type = '1';
+            else if(c == '2') type = '3';
+            else if(c == '3') type = '2';
+            break;
+        case 15:
+            if(c == '1') type = '3';
+            else if(c == '2') type = '2';
+            else if(c == '3') type = '1';
+            break;
+        case 20:
+            if(c == '1') type = '2';
+            else if(c == '2') type = '3';
+            else if(c == '3') type = '1';
+            break;
+    }
+    return type;
+}
+
+
+int GetEliteSprite(int floor, char type) {
+    int id = 0;
+    switch(floor) {
+        case 5:
+            if(type == '2') id = 21;
+            else if(type == '1') id = 22;
+            else if(type == '3') id = 23;   
+            break;
+        case 10:
+            if(type == '1') id = 24;
+            else if(type == '3') id = 25;
+            else if(type == '2') id = 26; 
+            break;
+        case 15:
+            if(type == '3') id = 27;
+            else if(type == '2') id = 28;
+            else if(type == '1') id = 29; 
+            break;
+        case 20:
+            if(type == '2') id = 30;
+            else if(type == '3') id = 31;
+            else if(type == '1') id = 32; 
+            break;
+
+    }
+    return id;
+}
+
+
+void InitializeEnemy(Enemy* e, char type, int floor) {
     switch(type) {
         case 'N':
             e->dmgRange[0] = 10; e->dmgRange[1] = 20;
@@ -25,11 +108,25 @@ void InitializeEnemy(Enemy* e, char type) {
             e->spriteID = GenerateRandomNum(1, 20);
             break;
         case '1': 
-            //initiate other values first
-            //function: rng 2 sprite IDS (int) then make player pick 
-            // whichever player picks is the spriteID that the enemy will use
-            //e->spriteID = chosen by player
-            
+            e->dmgRange[0] = 20; e->dmgRange[1] = 40;
+            e->flinchRate = 15;
+            e->healRange[0] = 8; e->healRange[1] = 15;
+            e->sync.HP = 100;
+            e->spriteID = GetEliteSprite(floor, type);
+            break;
+        case '2':
+            e->dmgRange[0] = 15; e->dmgRange[1] = 25;
+            e->flinchRate = 40;
+            e->healRange[0] = 8; e->healRange[1] = 15;
+            e->sync.HP = 150;
+            e->spriteID = GetEliteSprite(floor, type);
+            break;
+        case '3':
+            e->dmgRange[0] = 10; e->dmgRange[1] = 20;
+            e->flinchRate = 25;
+            e->healRange[0] = 8; e->healRange[1] = 15;
+            e->sync.HP = 200;
+            e->spriteID = GetEliteSprite(floor, type);
             break;
     }
     e->type = type;
@@ -37,10 +134,16 @@ void InitializeEnemy(Enemy* e, char type) {
     e->sync.flinchCounter = 0;
 }
 
+
 char PrepareEnemyType(int floor) {
     char type;
     if(IsEliteFloor(floor)) {
-        //randomize type
+        char first[15], second[15], third[15];
+        SetChoices(floor, first, second, third);
+        DisplayEliteOptions(floor, first, second, third);
+        type = GetEliteType(floor);
+        GoodluckNotice();
+        //Sleep(DELAY);
     }
     else {
         type = 'N';
@@ -48,13 +151,6 @@ char PrepareEnemyType(int floor) {
 
     return type;
 }
-
-//not sure if this is still needed 
-// void CheckIfPlayerDown(Player* p, Enemy e, int syncNum) {
-//     switch(syncNum) {
-//         //case 1: if()
-//     }
-// }
 
 bool IsBattleOver(const Player* p, const Enemy* e) {
     bool isOver = false;
@@ -123,7 +219,7 @@ void PlayerTechMove(const Player* p, Enemy* e, char log[LOG_LENGTH], int* lastSy
     if(p->techSync.HP > 0) {
         if(!p->techSync.isFlinched) {
             if(!e->sync.isFlinched) {
-                int chance = GenerateRandomNum(1, 10);
+                int chance = GenerateRandomNum(1, 2);
                 PlayerTechAttemptLog(log);
                 UpdateScreenWithLog(p, e, log, false);
                 Sleep(LOG_DELAY);  
@@ -384,7 +480,7 @@ void CheckPlayerStatus(Player* p) {
 
 void BattleLoop(Player* player, bool* playerWin) {
     Enemy enemy;
-    InitializeEnemy(&enemy, PrepareEnemyType(player->floor));
+    InitializeEnemy(&enemy, PrepareEnemyType(player->floor), player->floor);
     int lastSync = 1;
     char log[LOG_LENGTH] = "";
     char c = '0';
